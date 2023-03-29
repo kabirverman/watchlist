@@ -1,0 +1,260 @@
+{
+    "emojis" : {
+        "😀":{
+            "name" : "grinning face",
+            "path" : "assets/emojis/grinning_face_flat.svg"
+        },
+        "🤣":{
+            "name" : "rolling on the floor laughing",
+            "path" : "assets/emojis/rolling_on_the_floor_laughing_flat.svg"
+        },
+        "😘":{
+            "name" : "face blowing a kiss",
+            "path" : "assets/emojis/face_blowing_a_kiss_flat.svg"
+        },
+        "😭":{
+            "name" : "loudly crying face",
+            "path" : "assets/emojis/loudly_crying_face_flat.svg"
+        },
+        "😳":{
+            "name" : "flushed face",
+            "path" : "assets/emojis/flushed_face_flat.svg"
+        },
+        "🤪":{
+            "name" : "zany face",
+            "path" : "assets/emojis/zany_face_flat.svg"
+        },
+        "🤢":{
+            "name" : "nauseated face",
+            "path" : "assets/emojis/nauseated_face_flat.svg"
+        },
+        "🤓":{
+            "name" : "nerd face",
+            "path" : "assets/emojis/nerd_face_flat.svg"
+        },
+        "👹":{
+            "name" : "ogre",
+            "path" : "assets/emojis/ogre_flat.svg"
+        },
+        "💀":{
+            "name" : "skull",
+            "path" : "assets/emojis/skull_flat.svg"
+        },
+        "👽":{
+            "name" : "alien",
+            "path" : "assets/emojis/alien_flat.svg"
+        },
+        "🤖":{
+            "name" : "robot",
+            "path" : "assets/emojis/robot_flat.svg"
+        },
+        "✨":{
+            "name" : "sparkles",
+            "path" : "assets/emojis/sparkles_flat.svg"
+        },
+        "🪄":{
+            "name" : "magic wand",
+            "path" : "assets/emojis/magic_wand_flat.svg"
+        },
+        "🌙":{
+            "name" : "crescent moon",
+            "path" : "assets/emojis/crescent_moon_flat.svg"
+        },
+        "🔥":{
+            "name" : "fire",
+            "path" : "assets/emojis/fire_flat.svg"
+        },
+        "⚔️":{
+            "name" : "crossed swords",
+            "path" : "assets/emojis/crossed_swords_flat.svg"
+        },
+        "🗺️":{
+            "name" : "world map",
+            "path" : "assets/emojis/world_map_flat.svg"
+        },
+        "⛄":{
+            "name" : "snowman without snow",
+            "path" : "assets/emojis/snowman_without_snow_flat.svg"
+        },
+        "😂":{
+            "name" : "face with tears of joy",
+            "path" : "assets/emojis/face_with_tears_of_joy_flat.svg"
+        },
+        "👮":{
+            "name" : "police officer",
+            "path" : "assets/emojis/police_officer_flat_default.svg"
+        },
+        "📽️":{
+            "name" : "film projector",
+            "path" : "assets/emojis/film_projector_flat.svg"
+        },
+        "😮":{
+            "name" : "face with open mouth",
+            "path" : "assets/emojis/face_with_open_mouth_flat.svg"
+        },
+        "🎈":{
+            "name" : "balloon",
+            "path" : "assets/emojis/balloon_flat.svg"
+        },
+        "🔮":{
+            "name" : "crystal ball",
+            "path" : "assets/emojis/crystal_ball_flat.svg"
+        },
+        "🦤":{
+            "name" : "dodo",
+            "path" : "assets/emojis/dodo_flat.svg"
+        },
+        "🎸":{
+            "name" : "guitar",
+            "path" : "assets/emojis/guitar_flat.svg"
+        },
+        "🔍":{
+            "name" : "magnifying glass",
+            "path" : "assets/emojis/magnifying_glass_tilted_left_flat.svg"
+        },
+        "🚀":{
+            "name" : "rocket",
+            "path" : "assets/emojis/rocket_flat.svg"
+        },
+        "🔪":{
+            "name" : "knife",
+            "path" : "assets/emojis/kitchen_knife_flat.svg"
+        },
+        "🔫":{
+            "name" : "gun",
+            "path" : "assets/emojis/water_pistol_flat.svg"
+        },
+        "🤠":{
+            "name" : "cowboy hat face",
+            "path" : "assets/emojis/cowboy_hat_face_flat.svg"
+        },
+        "🕓":{
+            "name" : "clock",
+            "path" : "assets/emojis/four_oclock_flat.svg"
+        },
+        "🎞️":{
+            "name" : "film strip",
+            "path" : "assets/emojis/film_frames_flat.svg"
+        },
+        "🎬":{
+            "name" : "clapper board",
+            "path" : "assets/emojis/clapper_board_flat.svg"
+        },
+        "✏️":{
+            "name" : "pencil",
+            "path" : "assets/emojis/pencil_flat.svg"
+        },
+        "⭐":{
+            "name" : "star",
+            "path" : "assets/emojis/star_flat.svg"
+        },
+        "👉":{
+            "name" : "pointing finger",
+            "path" : "assets/emojis/backhand_index_pointing_right_flat_default.svg"
+        },
+        "⚙️":{
+            "name" : "gear",
+            "path" : "assets/emojis/gear_flat.svg"
+        },
+        "👁️":{
+            "name" : "eye",
+            "path" : "assets/emojis/eye_flat.svg"
+        },
+        "✂️":{
+            "name" : "scissors",
+            "path" : "assets/emojis/scissors_flat.svg"
+        }
+    },
+    "hues" : [
+        {
+            "hue": 0,
+            "name": "red",
+            "defaults" : {
+                "panel":"hsl(0, 100%, 95%)",
+                "border":"hsl(0, 50%, 80%)",
+                "textLarge":"hsl(0, 60%, 45%)",
+                "textSmall":"hsl(0, 89%, 33%)"
+            }
+        },
+        {
+            "hue": 25,
+            "name": "orange",
+            "defaults" : {
+                "panel":"hsl(25, 100%, 95%)",
+                "border":"hsl(25, 50%, 80%)",
+                "textLarge":"hsl(25, 60%, 38%)",
+                "textSmall":"hsl(25, 88%, 28%)"
+            }
+        },
+        {
+            "hue": 55,
+            "name": "yellow",
+            "defaults" : {
+                "panel":"hsl(55, 100%, 92%)",
+                "border":"hsl(55, 50%, 80%)",
+                "textLarge":"hsl(55, 60%, 29%)",
+                "textSmall":"hsl(55, 90%, 20%)"
+            }
+        },
+        {
+            "hue": 110,
+            "name": "green",
+            "defaults" : {
+                "panel":"hsl(110, 100%, 95%)",
+                "border":"hsl(110, 50%, 80%)",
+                "textLarge":"hsl(110, 30%, 36%)",
+                "textSmall":"hsl(110, 86%, 21%)"
+            }
+        },
+        {
+            "hue": 160,
+            "name": "cyan",
+            "defaults" : {
+                "panel":"hsl(160, 100%, 95%)",
+                "border":"hsl(160, 50%, 80%)",
+                "textLarge":"hsl(160, 60%, 30%)",
+                "textSmall":"hsl(160, 100%, 19%)"
+            }
+        },
+        {
+            "hue": 200,
+            "name": "blue",
+            "defaults" : {
+                "panel":"hsl(200, 100%, 95%)",
+                "border":"hsl(200, 50%, 80%)",
+                "textLarge":"hsl(200, 65%, 36%)",
+                "textSmall":"hsl(200, 90%, 26%)"
+            }
+        },
+        {
+            "hue": 230,
+            "name": "navy",
+            "defaults" : {
+                "panel":"hsl(230, 100%, 95%)",
+                "border":"hsl(230, 50%, 80%)",
+                "textLarge":"hsl(230, 50%, 51%)",
+                "textSmall":"hsl(230, 60%, 42%)"
+            }
+        },
+        {
+            "hue": 265,
+            "name": "purple",
+            "defaults" : {
+                "panel":"hsl(265, 100%, 95%)",
+                "border":"hsl(265, 50%, 80%)",
+                "textLarge":"hsl(265, 55%, 52%)",
+                "textSmall":"hsl(265, 60%, 42%)"
+            }
+        },
+        {
+            "hue": 300,
+            "name": "pink",
+            "defaults" : {
+                "panel":"hsl(300, 100%, 95%)",
+                "border":"hsl(300, 50%, 80%)",
+                "textLarge":"hsl(300, 55%, 41%)",
+                "textSmall":"hsl(300, 65%, 32%)"
+            }
+        }
+    ]
+}
