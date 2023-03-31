@@ -1,3 +1,4 @@
+import { useNavigate } from "react-router-dom"
 import { IMovie } from "../Interfaces"
 
 interface IMovieTileProps {
@@ -6,12 +7,14 @@ interface IMovieTileProps {
 
 
 export default function MovieTile(props:IMovieTileProps) {
+    const navigate = useNavigate()
     return (
         <div>
             <img
                 src={`https://image.tmdb.org/t/p/w${200}${props.movie.posterPath}?dummy=parameter`}
                 alt={props.movie.title}
                 style={{maxWidth:'100%', maxHeight:'100%',width:'100%', objectFit:'cover', borderRadius:10}}
+                onClick={()=>navigate(`/movie/${props.movie.movieId}`)}
             />
         </div>
 

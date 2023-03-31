@@ -1,12 +1,11 @@
-import React, { useState } from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { useState } from 'react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { IEmoji, IWatchlist } from './Interfaces';
 import { Route, Routes } from 'react-router-dom';
 import Homepage from './components/Homepage';
 import Header from './components/Header';
 import { getAllEmojis } from './utils/emoji';
+import MoviePage from './components/MoviePage';
 
 
 
@@ -35,6 +34,7 @@ function App() {
         <Header />
         <Routes>
           <Route path="/" element={<Homepage/>}/>
+          <Route path="/movie/:movieId" element={<MoviePage />}/>
         </Routes>
 
 

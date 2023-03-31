@@ -197,7 +197,7 @@ export default function Homepage() {
     useEffect(()=> {
         if (isLoading || !data) return
 
-        setMockWatchlists([{name:'this is my super cool watchlist of movies', emoji:getEmoji("💀"), hue:getRandomHue(), uuid:'123', movies:{[data[0].movidId]:data[0]}},{name:'horror movies that slap', emoji:getEmoji("🤪"), hue:getRandomHue(), uuid:'123', movies:{[data[0].movidId]:data[0]}}])
+        setMockWatchlists([{name:'this is my super cool watchlist of movies', emoji:getEmoji("💀"), hue:getRandomHue(), uuid:'123', movies:{[data[0].movieId]:data[0]}},{name:'horror movies that slap', emoji:getEmoji("🤪"), hue:getRandomHue(), uuid:'123', movies:{[data[0].movieId]:data[0]}}])
 
         setTrendingMovies(data?.slice(0, moviesToShow))
     },[data])
