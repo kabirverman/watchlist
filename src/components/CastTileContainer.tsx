@@ -1,4 +1,5 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
+import useWindowSize from "../hooks/useWindowSize"
 import { ICast, IHue } from "../Interfaces"
 import CastTile from "./CastTile"
 
@@ -9,13 +10,24 @@ interface ICastTileContainerProps {
 
 export default function CastTileContainer(props: ICastTileContainerProps) {
     
-    const [numberToShow, setNumberToShow] = useState(6)
+    const windowSize = useWindowSize()
+    
+    const [numberToShow, setNumberToShow] = useState(windowSize.width > 1000 ? 6 : 4)
     const [isHoveringMore, setIsHoveringMore] = useState(false)
+
+    useEffect(()=> {
+        if (numberToShow === 6 && windowSize.width <= 1000) {
+            setNumberToShow(4)
+        } else if (numberToShow === 4 && windowSize.width > 1000) {
+            setNumberToShow(6)
+            
+        }
+    },[windowSize])
 
 
     return (
         <div>
-            <div style={{display:'grid', gridTemplateColumns:'1fr 1fr 1fr', gap:10}}>
+            <div style={{display:'grid', gridTemplateColumns:windowSize.width > 1000 ? '1fr 1fr 1fr' : '1fr 1fr', gap:10}}>
                 {props.cast.slice(0,numberToShow).map((castMember, index) => {
                 return (
                     <CastTile key={castMember.name} castMember={castMember} hue={props.hue}/>

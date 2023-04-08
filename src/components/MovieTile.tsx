@@ -1,5 +1,11 @@
-import { useNavigate } from "react-router-dom"
+import { useContext, useRef, useState } from "react"
+import { useNavigate} from "react-router-dom"
 import { IMovie } from "../Interfaces"
+import { getHueFromRGB, getRandomHue } from "../utils/hues"
+import ColorThief from "colorthief"
+import { Context } from "./MainProvider"
+
+const colorThief = new ColorThief();
 
 interface IMovieTileProps {
     movie:IMovie
@@ -8,14 +14,37 @@ interface IMovieTileProps {
 
 export default function MovieTile(props:IMovieTileProps) {
     const navigate = useNavigate()
+    const providerState = useContext(Context)
+
+
+    const [hue, setHue] = useState(getRandomHue())
+    const imageRef = useRef<HTMLImageElement>(null)
+
+
+    
     return (
-        <div>
-            <img
-                src={`https://image.tmdb.org/t/p/w${200}${props.movie.posterPath}?dummy=parameter`}
-                alt={props.movie.title}
-                style={{maxWidth:'100%', maxHeight:'100%',width:'100%', objectFit:'cover', borderRadius:10}}
-                onClick={()=>navigate(`/movie/${props.movie.movieId}`)}
-            />
+        <div style={{boxSizing:'border-box'}}>
+            {
+                props.movie.posterPath  === "loading"
+                ? <div></div>
+
+                : <img
+                    ref={imageRef}
+                    crossOrigin="anonymous"
+                    src={`https://image.tmdb.org/t/p/w${200}${props.movie.posterPath}`}
+                    alt={props.movie.title}
+                    style={{maxWidth:'100%', maxHeight:'100%',width:'100%', objectFit:'cover', borderRadius:10,cursor:'pointer',boxShadow:`0px 0px 0px 1px ${hue.defaults.border}`}}
+                    onClick={()=>{
+                        navigate(`/movie/${props.movie.movieId}`)
+                        providerState.updateHue(hue)
+                    }}
+                    onLoad={()=> {
+                        let rgb = colorThief.getColor(imageRef.current, 10)
+                        let grabbedHue = getHueFromRGB(rgb[0], rgb[1], rgb[2])
+                        setHue(grabbedHue)
+                    }}
+                />
+            }
         </div>
 
 

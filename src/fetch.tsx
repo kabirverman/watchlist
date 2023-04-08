@@ -6,7 +6,7 @@ const API_KEY = process.env.REACT_APP_API_KEY
 
 function toIMovieArray(inputMovies:any) {
   let movies:IMovie[] = inputMovies.map((movie:any) => {
-
+    // console.log(movie)
     return {
         title: movie.title,
         year: movie.release_date.split('-')[0],
@@ -52,10 +52,15 @@ export function fetchMovieDetails(movieId:string) {
       let directors:string[] = []
       let writers:string[] = []
       json.credits.crew.forEach((member:any) => {
-        if (member.job === 'Director') directors.push(member.name)
+        if (member.job === 'Director'){
+          directors.push(member.name)
+          return
+        }
 
-        if (member.job !== "Screenplay" && member.job !== "Story" && member.job !== "Writer") return
-        writers.push(member.name)
+        if (member.job === "Screenplay" || member.job === "Writer") {
+          writers.push(member.name)
+          return
+        }
         
       })
 
@@ -86,7 +91,13 @@ export function fetchMovieDetails(movieId:string) {
 
 
       // get similar movies
-      let similarMovies:IMovie[] = toIMovieArray(json.similar.results)
+
+      // filter out collections (which don't have genre ids) from the movies & filter out movies without posters
+      let similarResults = json.similar.results.filter((movie:any) => movie.genre_ids && movie.poster_path)
+
+      let similarMovies:IMovie[] = toIMovieArray(similarResults)
+
+
 
 
 

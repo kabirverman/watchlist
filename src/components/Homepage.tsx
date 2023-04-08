@@ -1,10 +1,11 @@
 import { useQuery } from "@tanstack/react-query";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { fetchTrendingMovies } from "../fetch";
 import useWindowSize, { IWindowSize } from "../hooks/useWindowSize";
-import { IMovie, IWatchlist } from "../Interfaces";
+import { IHue, IMovie, IWatchlist } from "../Interfaces";
 import { getEmoji } from "../utils/emoji";
 import { getRandomHue } from "../utils/hues";
+import { Context } from "./MainProvider";
 import MovieTile from "./MovieTile";
 import MovieTileContainer from "./MovieTileContainer";
 import MovieTileScrollingContainer from "./MovieTileScrollingContainer";
@@ -40,10 +41,13 @@ function calculateMoviesToShow(windowSize:IWindowSize) {
 
 
 
+interface IHeroProps{
+    movies:IMovie[] | undefined,
+    hue:IHue
+}
 
 
-
-function Hero(props:{movies:IMovie[] | undefined}) {
+function Hero(props:IHeroProps) {
 
     const [moviesToDisplay, setMoviesToDisplay] = useState<IMovie[]>(props.movies ? props.movies.slice(0,7) : new Array(7).fill({title:'loading', year:'loading', genreIds:[], voteAverage:0, posterPath:'loading', movieId:0, isWatched:false, dateAdded:0}))
 
@@ -68,11 +72,11 @@ function Hero(props:{movies:IMovie[] | undefined}) {
 
     
     return (
-        <div className="homepageHero-container">
+        <div className="homepageHero-container" style={{backgroundColor:props.hue.defaults.panel}}>
             <div className="pageContent homepageHero-containerContent">
                 <div className="homepageHero-text" style={{display:'flex', flexDirection:'column'}}>
-                    <h1 className="homepageHero-title">movie<br/>watchlist</h1>
-                    <p className="homepageHero-slogan">lorem ipsum swagathy dorum flarp.</p>
+                    <h1 className="homepageHero-title" style={{color:props.hue.defaults.textLarge}}>movie<br/>watchlist</h1>
+                    <p className="homepageHero-slogan" style={{color:props.hue.defaults.textSmall}}>lorem ipsum swagathy dorum flarp.</p>
                 </div>
                 
                 <div className="homepageHero-imageContainer">
@@ -182,17 +186,19 @@ function WatchlistTileContainer(props:{tilesPerRow:number, watchlists:IWatchlist
 
 export default function Homepage() {
 
+    const providerState = useContext(Context)
+
     const windowSize = useWindowSize()
     const movieTilesPerRow = calculateMovieTilesPerRow(windowSize)
     const moviesToShow = calculateMoviesToShow(windowSize)
     const watchlistTilesPerRow = calculateWatchlistTilesPerRow(windowSize)
-    const {data, isLoading}  = useQuery({ queryKey: ["trendingMovies"], queryFn:fetchTrendingMovies, refetchOnWindowFocus: false})
+    const {data, isLoading}  = useQuery({ queryKey: ["trendingMovies"], queryFn:fetchTrendingMovies, refetchOnWindowFocus: false, staleTime:60000})
     const [trendingMovies, setTrendingMovies] = useState<IMovie[]>(data?.slice(0, moviesToShow) ?? new Array(moviesToShow).fill({title:'loading', year:'loading', genreIds:[], voteAverage:0, posterPath:'loading', movieId:0, isWatched:false, dateAdded:0}))
     // console.log(moviesToDisplay)
 
     const [mockWatchlists, setMockWatchlists] = useState<IWatchlist[]>()
 
-    
+
 
     useEffect(()=> {
         if (isLoading || !data) return
@@ -226,20 +232,20 @@ export default function Homepage() {
 
     return (
         <div className="homepage-container">
-            <Hero movies={data}/>
+            <Hero movies={data} hue={providerState.hue}/>
             <div className="pageContent">
 
                 <div style={{display:'flex', flexDirection:'column', rowGap:20, marginTop:60}}>
-                    <b style={{fontSize:20}}>your watchlists</b>
+                    <b style={{fontSize:20, color:providerState.hue.defaults.textLarge}}>your watchlists</b>
                     <WatchlistTileContainer tilesPerRow={watchlistTilesPerRow} watchlists={mockWatchlists}/>
                 </div>
 
 
                 <div style={{display:'flex', flexDirection:'column', rowGap:20}}>
-                    <b style={{fontSize:20}}>trending movies</b>
+                    <b style={{fontSize:20, color:providerState.hue.defaults.textLarge}}>trending movies</b>
                     {
                         windowSize.width > 500 &&
-                        <MovieTileContainer movies={trendingMovies} tilesPerRow={movieTilesPerRow}/>
+                        <MovieTileContainer movies={trendingMovies} isSingleRow={true} tilesPerRow={movieTilesPerRow}/>
                     }
                     
                 </div>
