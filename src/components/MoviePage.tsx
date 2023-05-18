@@ -232,7 +232,7 @@ export default function MoviePage() {
 
 
 
-                        <div style={{padding:'15px 10px', backgroundColor:providerState.hue.defaults.textLarge, textAlign:'center', borderRadius:10, fontWeight:600, color:'white'}}>
+                        <div style={{padding:'15px 10px', backgroundColor:providerState.hue.defaults.textLarge, textAlign:'center', borderRadius:10, fontWeight:600, color:'white'}} onClick={()=>setShowAddMovieToWatchlistModal(true)}>
                             add to a watchlist
                         </div>
 
@@ -266,7 +266,7 @@ export default function MoviePage() {
                     <div style={{position:'absolute',top:0, left:0, width:'100%', zIndex:5}}>
                         <div className="modalBackground" style={{height:document.body.clientHeight}}/>
                         {/* <div style={{position:'absolute', top:(window.innerHeight - modalSize.height)/2 + window.scrollY, left:(window.innerWidth - modalSize.width)/2, zIndex:6}}> */}
-                        <div style={{position:'fixed', top:'50%', left:'50%', transform:'translate(-50%, -50%)'}}>
+                        <div className="addMovieToWatchlist-positioner" style={{position:'fixed', top:'50%', left:'50%', transform:'translate(-50%, -50%)'}}>
                             <WatchlistAddModal movie={data} closeModal={()=>setShowAddMovieToWatchlistModal(false)} setModalSize={setModalSize}/>
                         </div>
                     </div>

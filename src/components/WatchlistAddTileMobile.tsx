@@ -40,7 +40,7 @@ export default function WatchlistAddTileMobile(props:IWatchlistAddTileMobileProp
                 <div style={{position:'absolute',top:0, left:0, width:'100%', zIndex:5}}>
                     <div className="modalBackground" style={{height:document.body.clientHeight}}/>
                     {/* <div style={{position:'absolute',top:(window.innerHeight - modalSize.height)/2 + window.scrollY,left:0, width:'100%', zIndex:6}}> */}
-                    <div style={{position:'fixed', top:'50%', left:'50%', transform:'translate(-50%, -50%)'}}>
+                    <div style={{position:'fixed', top:'50%', left:'50%', transform:'translate(-50%, -50%)', width:'100%'}}>
                         <WatchlistEditModal closeModal={()=>setIsCreatingNewWatchlist(false)}/>
                     </div>
                 </div>

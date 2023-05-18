@@ -33,7 +33,7 @@ export default function MovieTileContainer(props:IMovieTileContainerProps) {
         let tilesPerRow = 6
     
         if (windowSize.width <= 1000) tilesPerRow = 4
-        if (windowSize.width <= 500) tilesPerRow = 10
+        if (windowSize.width <= 500) tilesPerRow = 3
     
     
         return tilesPerRow
@@ -46,7 +46,8 @@ export default function MovieTileContainer(props:IMovieTileContainerProps) {
             })}
 
             {blankTiles.map((blankTile, index) => {
-                return <div key={index} style={{backgroundColor:'grey', width:'100%', aspectRatio:'2/3', borderRadius:10}} />
+                // return <div key={index} style={{backgroundColor:'#e7e7e7', width:'100%', aspectRatio:'2/3', borderRadius:10}} />
+                return <div key={index} style={{backgroundColor:providerState.hue.defaults.textSmall,opacity:0.1, width:'100%', aspectRatio:'2/3', borderRadius:10}} />
             })}
 
         </div>

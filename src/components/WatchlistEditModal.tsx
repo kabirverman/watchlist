@@ -7,8 +7,8 @@ import { v4 as uuidv4 } from 'uuid'
 
 interface IWatchlistEditModalProps {
     watchlist?:IWatchlist,
-
     closeModal:()=>void,
+    customWidth?:string,
     // setModalSize: React.Dispatch<React.SetStateAction<{width: number,height: number}>>
 }
 
@@ -16,10 +16,11 @@ interface IWatchlistEditModalProps {
 export default function WatchlistEditModal(props:IWatchlistEditModalProps) {
 
     const providerState = useContext(Context)
-    const [watchlistEmoji, setWatchlistEmoji] = useState(getAllWatchlistEmojis()[0])
-    const [watchlistName, setWatchlistName] = useState("")
-    const [watchlistHue, setWatchlistHue] = useState<IHue>(getRandomHue())
+    const [watchlistEmoji, setWatchlistEmoji] = useState(props.watchlist ? props.watchlist.emoji : getAllWatchlistEmojis()[0])
+    const [watchlistName, setWatchlistName] = useState(props.watchlist ? props.watchlist.name : "")
+    const [watchlistHue, setWatchlistHue] = useState<IHue>(props.watchlist ? props.watchlist.hue : getRandomHue())
     const modalRef = useRef<HTMLDivElement>(null)
+    
     // const [modalSize, setModalSize] = useState({width:modalRef.current?.clientWidth,height:modalRef.current?.clientHeight})
 
     // useLayoutEffect(()=> {
@@ -30,6 +31,22 @@ export default function WatchlistEditModal(props:IWatchlistEditModalProps) {
 
     function handlePrimaryButtonClick() {
         if (props.watchlist) {
+
+            let updatedWatchlists = providerState.watchlists.map((watchlist) => {
+                if (watchlist.uuid === props.watchlist?.uuid) {
+                    return {
+                        ...watchlist,
+                        name:watchlistName,
+                        emoji:watchlistEmoji,
+                        hue:watchlistHue
+                    }
+                } else {
+                    return watchlist
+                }
+            })
+
+            providerState.updateWatchlists(updatedWatchlists)
+            props.closeModal()
 
             return
         }
@@ -74,14 +91,14 @@ export default function WatchlistEditModal(props:IWatchlistEditModalProps) {
 
     return (
         <div ref={modalRef} style={{backgroundColor:'white', borderRadius:10, margin:15, boxShadow:'0px 0px 15px rgba(0,0,0,0.25)'}}>
-            <div style={{padding:20, display:'flex', flexDirection:'column', gap:20}}>
+            <div style={{padding:20, display:'flex', flexDirection:'column', gap:20, width:props.customWidth ? props.customWidth : 'auto', boxSizing:'border-box'}}>
                 <div className="watchlistEditModal-section">
                     <p className="watchlistEditModal-section-text">name</p>
                     <input
                         type="text"
                         style={{all:'unset', backgroundColor:'#F3F3F3',width:'100%', borderRadius:10, padding:10, boxSizing:'border-box'}}
                         value={watchlistName}
-                        placeholder={props.watchlist ? '' : 'enter a watchlist name'}
+                        placeholder={props.watchlist ? props.watchlist.name : 'enter a watchlist name'}
                         onChange={(e)=>setWatchlistName(e.target.value)}
                     />
                 </div>

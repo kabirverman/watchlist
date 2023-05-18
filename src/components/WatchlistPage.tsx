@@ -1,9 +1,12 @@
 import { useContext, useEffect, useState } from "react"
 import { useLocation, useParams } from "react-router-dom"
+import useWindowSize from "../hooks/useWindowSize"
 import { IMovie, IWatchlist } from "../Interfaces"
 import { getEmoji } from "../utils/emoji"
 import { Context } from "./MainProvider"
 import MovieTileContainer from "./MovieTileContainer"
+import MovieTileScrollingContainer from "./MovieTileScrollingContainer"
+import WatchlistEditModal from "./WatchlistEditModal"
 
 
 
@@ -13,6 +16,7 @@ export default function WatchlistPage() {
     watchlistId = watchlistId ?? ""
 
     const providerState = useContext(Context)
+    const windowSize = useWindowSize()
 
     const location = useLocation()
     
@@ -33,8 +37,13 @@ export default function WatchlistPage() {
 
     const pointingEmoji = getEmoji("👉")
     const gearEmoji = getEmoji("⚙️")
+
+    const [shouldShowEditModal, setShouldShowEditModal] = useState(false)
+
+    const [heroSVG, setHeroSVG] = useState("")
     
 
+    
 
     useEffect(()=> {
 
@@ -43,6 +52,11 @@ export default function WatchlistPage() {
 
         providerState.updateHue(watchlistState.hue)
 
+        let fontSize = '70px'
+        if (windowSize.width > 500) {
+            setHeroSVG(`url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' version='1.1' height='200px'><text x='15' y='27%' fill='black' font-size='${fontSize}' font-weight='600' opacity='0.025' font-family='Noto Sans,Helvetica Neue,Helvetica,Arial,sans-serif'>${Array(10).fill(watchlistState.name).join(" ")}</text><text x='-50' y='60%' fill='black' font-size='${fontSize}' font-weight='600' opacity='0.025' font-family='Noto Sans,Helvetica Neue,Helvetica,Arial,sans-serif'>${Array(9).fill(watchlistState.name).join(" ")}</text><text x='-100' y='93%' fill='black' font-size='${fontSize}' font-weight='600' opacity='0.025' font-family='Noto Sans,Helvetica Neue,Helvetica,Arial,sans-serif'>${Array(8).fill(watchlistState.name).join(" ")}</text></svg>")`)
+        }
+
         
 
         
@@ -50,7 +64,7 @@ export default function WatchlistPage() {
 
 
         console.log(watchlistState)
-    },[])
+    },[watchlistState])
 
 
 
@@ -82,6 +96,12 @@ export default function WatchlistPage() {
 
     },[sortOrder])
 
+    useEffect(()=> {
+        console.log('provider state updated')
+        setWatchlistState(providerState.watchlists.find((watchlist) => watchlist.uuid === watchlistId))
+        
+    },[providerState.watchlists])
+
 
 
     function showSortButton() {
@@ -94,12 +114,12 @@ export default function WatchlistPage() {
                     className="watchlistPage-button"
                     style={{backgroundColor:watchlistState?.hue.defaults.panel}}
                     >
-                        <p style={{fontWeight:500}}>sort order</p>
+                        <p style={{fontWeight:500, color:watchlistState?.hue.defaults.textSmall}}>sort order</p>
                         {/* <div style={{borderRadius:20, width:20, height:20, backgroundColor:'red'}}></div> */}
                         <img src={require(`../${pointingEmoji.path}`)} alt={pointingEmoji.name} style={{width:20, height:20, transform:sortOrder === "newest first" ? 'rotate(-90deg)' : 'rotate(90deg)'}} />
                 </div>
                 { hoveringSortButton &&
-                    <div style={{position:'relative', display:'flex', justifyContent:'flex-end'}}>
+                    <div style={{position:'relative', display:'flex', justifyContent:'flex-end', zIndex:2}}>
                         <div style={{position:'absolute', backgroundColor:'white', width:'max-content', minWidth:'100%', borderRadius:5, boxShadow:'0px 3px 5px rgba(0,0,0,0.3)'}}>
                             {sortOrderOptions.map((option,index) => {
                                 let borderRadius = '0px'
@@ -134,34 +154,50 @@ export default function WatchlistPage() {
         )
     }
 
+    function showCategoryButtons() {
+        return (
+            <div className="watchlistPage-categoryButtons-master" style={{color:watchlistState?.hue.defaults.textSmall}}>
+                {displayCategoryOptions.map((category) => {
+                    return (
+                        <p
+                            key={category}
+                            style={{
+                                fontWeight: displayCategory === category ? 600 : 400,
+                                cursor: displayCategory === category ? "default" : "pointer",
+                                opacity: displayCategory === category ? 1 : 0.7,
+                            }}
+                            onClick={() => setDisplayCategory(category)}>
+
+                            {category}
+
+                        </p>
+                    )
+                })}
+            </div>
+        )
+    }
+
 
     function showButtonRow() {
         return (
             <div className="watchlistPage-buttonRow">
 
-                <div className="watchlistPage-button" style={{backgroundColor:watchlistState?.hue.defaults.panel}}>
-                    {/* <div style={{borderRadius:20, width:20, height:20, backgroundColor:'red'}}></div> */}
-                    <img src={require(`../${gearEmoji.path}`)} alt={gearEmoji.name} style={{width:20, height:20}} />
-                    <p style={{fontWeight:500}}>settings</p>
+                <div>
+                    <div className="watchlistPage-button" style={{backgroundColor:watchlistState?.hue.defaults.panel}} onClick={()=>setShouldShowEditModal((prev)=> !prev)}>
+                        {/* <div style={{borderRadius:20, width:20, height:20, backgroundColor:'red'}}></div> */}
+                        <img src={require(`../${gearEmoji.path}`)} alt={gearEmoji.name} style={{width:20, height:20}} />
+                        <p style={{fontWeight:500, color:watchlistState?.hue.defaults.textSmall}}>settings</p>
+                    </div>
+                    { shouldShowEditModal &&
+                        <div style={{position:'absolute', transform:`translate(-15px,0px`, zIndex:2}}>
+                            <WatchlistEditModal watchlist={watchlistState} closeModal={()=>setShouldShowEditModal(false)}/>
+                        </div>
+                    }
                 </div>
 
-                <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", justifyItems: "center", gap: 15, position:'absolute', left:'50%', transform:'translate(-50%,0)', fontSize:20}}>
-                    {displayCategoryOptions.map((category) => {
-                        return (
-                            <p
-                                key={category}
-                                style={{
-                                    fontWeight: displayCategory === category ? 600 : 400,
-                                    cursor: displayCategory === category ? "default" : "pointer",
-                                }}
-                                onClick={() => setDisplayCategory(category)}>
-
-                                {category}
-
-                            </p>
-                        )
-                    })}
-                </div>
+                { windowSize.width > 500 &&
+                    showCategoryButtons()
+                }
 
                 {showSortButton()}
 
@@ -169,14 +205,15 @@ export default function WatchlistPage() {
         )
     }
 
-
+    
     
     return (
-			<div style={{ display: "flex", flexDirection: "column", gap: 30, alignItems: "center" }}>
-				<div style={{ backgroundColor: watchlistState!.hue.defaults.panel, height: 300, width: "100%", display:'flex', justifyContent:'center', alignItems:'center'}}>
+			<div className="watchlistPage">
+				{/* <div className="watchlistPage-hero-master" style={{ backgroundColor: watchlistState!.hue.defaults.panel, backgroundImage:`linear-gradient(-165deg, transparent, ${watchlistState!.hue.defaults.panel}),url(${require(`../${watchlistState!.emoji.path}`)})`}}> */}
+                <div className="watchlistPage-hero-master" style={{ backgroundColor: watchlistState!.hue.defaults.panel, backgroundImage:heroSVG}}>
                     <div className="pageContent" style={{display:'flex', flexDirection:'row', justifyContent:'space-between', alignItems:'center', gap:50}}>
-                        <b style={{fontSize:70, lineHeight:'70px', color:watchlistState?.hue.defaults.textLarge}}>{watchlistState?.name}</b>
-                        <img src={require(`../${watchlistState?.emoji.path}`)} alt={watchlistState?.emoji.name} style={{width:200, height:200}} />
+                        <b className="watchlistPage-hero-text" style={{color:watchlistState?.hue.defaults.textLarge}}>{watchlistState?.name}</b>
+                        <img className="watchlistPage-hero-emoji" src={require(`../${watchlistState?.emoji.path}`)} alt={watchlistState?.emoji.name} />
                     </div>
                 </div>
 
@@ -184,8 +221,23 @@ export default function WatchlistPage() {
 
 					{showButtonRow()}
 
+                    { windowSize.width <= 500 &&
+                        <div style={{display:'flex', flexDirection:'column', gap:15}}>
+                            {showCategoryButtons()}
+                            <MovieTileContainer movies={sortedMovies[displayCategory]} isSingleRow={false} tilesPerRow={3} />
+                        </div>
+
+                    }
+
 					<div>
-						<MovieTileContainer movies={sortedMovies[displayCategory]} isSingleRow={false} tilesPerRow={6} />
+                        {/* {windowSize.width <= 500 &&
+                            <div style={{marginTop:20}}>
+                                <MovieTileScrollingContainer movies={sortedMovies[displayCategory]} />
+                            </div>
+                        } */}
+                        { windowSize.width > 500 &&
+                            <MovieTileContainer movies={sortedMovies[displayCategory]} isSingleRow={false} tilesPerRow={6} />
+                        }
 					</div>
 				</div>
 			</div>

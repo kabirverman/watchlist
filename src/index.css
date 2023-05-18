@@ -292,6 +292,13 @@ input:focus-visible {
   box-shadow: 0px 0px 0px 3px #efefef;
 }
 
+.watchlistPage {
+  display:flex;
+  flex-direction:column;
+  gap:30px;
+  align-items:center;
+}
+
 .watchlistPage-buttonRow {
   display:flex;
   justify-content:space-between;
@@ -305,6 +312,50 @@ input:focus-visible {
   align-items:center;
   border-radius:5px;
   cursor:pointer;
+}
+
+.watchlistPage-categoryButtons-master {
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  justify-items:center;
+  gap:15px;
+  position:absolute;
+  left:50%;
+  transform:translate(-50%,0);
+  font-size:20px;
+}
+
+.watchlistPage-hero-master {
+  height:300px;
+  width:100%;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+}
+
+.watchlistPage-hero-text {
+  font-size:70px;
+  line-height:70px;
+}
+
+.watchlistPage-hero-emoji {
+  width:200px;
+  height:200px;
+}
+
+.addMovieToWatchlist-positioner {
+  position:fixed;
+  top:50%;
+  left:50%;
+  transform:translate(-50%, -50%);
+}
+
+.watchlistAddModal-master {
+  background-color:white;
+  border-radius:10px;
+  margin:15px;
+  box-shadow:0px 0px 15px rgba(0,0,0,0.25);
+  width:400px;
 }
 
 
@@ -392,6 +443,10 @@ input:focus-visible {
     font-size: 15px;
   }
 
+  .movieTileContainer-container {
+    gap:10px;
+  }
+
   .moviePage-titleTile {
     padding:15px;
   }
@@ -418,4 +473,44 @@ input:focus-visible {
   .moviePage-overviewTile-title{
     font-size:16px;
   }
+
+  .watchlistPage-categoryButtons-master {
+    position:initial;
+    transform: none;
+    font-size: 18px;
+    display: flex;
+    justify-content: center;
+  }
+
+  .watchlistPage-hero-master {
+    height:200px;
+  }
+
+  .watchlistPage-hero-text {
+    font-size:25px;
+    line-height:25px;
+  }
+
+  .watchlistPage-hero-emoji {
+    width:75px;
+    height:75px;
+  }
+
+  .watchlistPage {
+    gap:15px;
+  }
+
+  .addMovieToWatchlist-positioner {
+    width:100%;
+  }
+
+  .watchlistAddModal-master {
+    background-color:white;
+    border-radius:10px;
+    margin:15px;
+    box-shadow:0px 0px 15px rgba(0,0,0,0.25);
+    width:auto;
+  }
+
+
 }
