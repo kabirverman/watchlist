@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { IEmoji, IWatchlist } from './Interfaces';
@@ -9,6 +9,8 @@ import { getAllEmojis } from './utils/emoji';
 import MoviePage from './components/MoviePage';
 import { getRandomHue } from './utils/hues';
 import MainProvider from './components/MainProvider';
+import { getWatchlistsFromLocal } from './fetch';
+import WatchlistPage from './components/WatchlistPage';
 
 
 
@@ -18,10 +20,22 @@ const queryClient = new QueryClient()
 function App() {
 
 
-  const [watchlists, setWatchlists] = useState<IWatchlist[]>([])
+  const [watchlists, setWatchlists] = useState<IWatchlist[]>(getWatchlistsFromLocal())
   const [allEmojis, setAllEmojis] = useState<IEmoji[]>(getAllEmojis())
   const [hue, setHue] = useState(getRandomHue())
 
+
+  useEffect(()=> {
+    // localStorage.clear()
+    console.log(localStorage.getItem('watchlists'))
+    JSON.parse(localStorage.getItem('watchlists') || '[]').forEach((watchlist:IWatchlist) => {
+      console.log(watchlist)
+    })
+
+    getWatchlistsFromLocal().forEach((watchlist:IWatchlist) => {
+      console.log(watchlist)
+    })
+  },[])
 
   function preloadEmojis() {
     return (
@@ -39,8 +53,9 @@ function App() {
         <div className="App">
           <Header/>
           <Routes>
-            <Route path="/" element={<Homepage/>}/>
+            <Route path="/" element={<Homepage watchlists={watchlists} setWatchlists={setWatchlists}/>}/>
             <Route path="/movie/:movieId" element={<MoviePage />}/>
+            <Route path="/watchlist/:watchlistId" element={<WatchlistPage/>}/>
           </Routes>
 
 

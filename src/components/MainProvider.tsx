@@ -1,10 +1,13 @@
 import { createContext, ReactNode, useContext, useState } from "react"
-import { IHue } from "../Interfaces"
+import { getWatchlistsFromLocal } from "../fetch"
+import { IHue, IWatchlist } from "../Interfaces"
 import { getRandomHue } from "../utils/hues"
 
 export const Context = createContext({
     hue:getRandomHue(),
-    updateHue: (hue:IHue) => {}
+    updateHue: (hue:IHue) => {},
+    watchlists:getWatchlistsFromLocal(),
+    updateWatchlists: (watchlists:IWatchlist[]) => {},
 })
 
 interface IMainProviderProps {
@@ -14,17 +17,27 @@ interface IMainProviderProps {
 export default function MainProvider({children}:IMainProviderProps) {
     const defaultContext = useContext(Context)
     const [hue, setHue] = useState(defaultContext.hue)
+    const [watchlists, setWatchlists] = useState(defaultContext.watchlists)
+
 
 
     function updateHue(hue:IHue) {
         setHue(hue)
     }
 
+    function updateWatchlists(watchlists:IWatchlist[]) {
+        setWatchlists(watchlists)
+        localStorage.setItem('watchlists', JSON.stringify(watchlists))
+    }
+
+
 
 
     const providerState:typeof defaultContext = {
         hue,
         updateHue,
+        watchlists,
+        updateWatchlists
         
     }
 

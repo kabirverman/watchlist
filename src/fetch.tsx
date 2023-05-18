@@ -1,8 +1,9 @@
-import { ICast, IMovie, IMovieDetails } from "./Interfaces"
-
+import { ICast, IConfig, IMovie, IMovieDetails, IWatchlist } from "./Interfaces"
+import configJson from "./config.json"
 
 const API_KEY = process.env.REACT_APP_API_KEY
 
+const config:IConfig = configJson as IConfig
 
 function toIMovieArray(inputMovies:any) {
   let movies:IMovie[] = inputMovies.map((movie:any) => {
@@ -10,7 +11,7 @@ function toIMovieArray(inputMovies:any) {
     return {
         title: movie.title,
         year: movie.release_date.split('-')[0],
-        genreIds: movie.genre_ids.slice(0,3),
+        genres: movie.genre_ids.slice(0,3).map((genreId:number) => config.genres[genreId]),
         voteAverage: movie.vote_average,
         posterPath: movie.poster_path,
         movieId: movie.id,
@@ -105,7 +106,7 @@ export function fetchMovieDetails(movieId:string) {
       let movieDetails:IMovieDetails = {
         title: json.title,
         year: json.release_date.split('-')[0],
-        genreIds: json.genres.slice(0,3).map((genre:any) => genre.id),
+        genres: json.genres.slice(0,3).map((genre:any) => config.genres[genre.id]),
         voteAverage: json.vote_average,
         posterPath: json.poster_path,
         movieId,
@@ -123,4 +124,32 @@ export function fetchMovieDetails(movieId:string) {
       return movieDetails
     })
     .catch(err => console.error(err))
+}
+
+
+
+
+export async function fetchMovieSearch(query:string) {
+  query = query.split(" ").join("+")
+  return fetch(`https://api.themoviedb.org/3/search/movie?api_key=${API_KEY}&query=${query}`)
+  .then(response => response.json())
+  .then(json => {
+    
+    // filter out movies without genres or release dates
+    let filteredResults = json.results.filter((movie:any) => movie.genre_ids.length >= 1 && movie.release_date !== "")
+    let movies:IMovie[] = toIMovieArray(filteredResults)
+    return movies
+  })
+  .catch(err => console.error(err))
+
+}
+
+
+export function getWatchlistsFromLocal() {
+  let watchlistJson = localStorage.getItem('watchlists')
+  let watchlists:IWatchlist[] = []
+  if (watchlistJson) {
+    watchlists = JSON.parse(watchlistJson)
+  }
+  return watchlists
 }

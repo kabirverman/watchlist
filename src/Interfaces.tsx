@@ -3,7 +3,7 @@
 export interface IMovie {
     title:string,
     year:number,
-    genreIds:string[],
+    genres:IGenre[],
     voteAverage:number,
     posterPath:string,
     movieId:string,
@@ -14,7 +14,7 @@ export interface IMovie {
 export interface IMovieDetails {
     title:string,
     year:number,
-    genreIds:string[],
+    genres:IGenre[],
     voteAverage:number,
     posterPath:string,
     movieId:string,
@@ -63,4 +63,10 @@ export interface IConfig {
     emojis: {[key:string]:IEmoji},
     hues: IHue[]
     genres: {[key:string]:{name:string, emoji:string}}
+}
+
+export interface IGenre {
+    name:string,
+    id:string,
+    emoji:string
 }

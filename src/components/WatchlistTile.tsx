@@ -1,3 +1,4 @@
+import { useNavigate } from "react-router-dom"
 import { IWatchlist } from "../Interfaces"
 
 interface IWatchlistTileProps {
@@ -5,8 +6,13 @@ interface IWatchlistTileProps {
 }
 
 export default function WatchlistTile(props:IWatchlistTileProps) {
+    const navigate = useNavigate()
     return (
-        <div className="watchlistTile-container" style={{backgroundColor:props.watchlist.hue.defaults.panel, boxShadow:`inset 0px 0px 0px 1px ${props.watchlist.hue.defaults.border}`}}>
+        <div
+            className="watchlistTile-container"
+            style={{backgroundColor:props.watchlist.hue.defaults.panel, boxShadow:`inset 0px 0px 0px 1px ${props.watchlist.hue.defaults.border}`}}
+            onClick={()=>navigate(`/watchlist/${props.watchlist.uuid}`)}
+            >
             <div className="watchlistTile-content">
                 {/* <div className="watchlistTile-emoji" /> */}
                 <img 

@@ -5,7 +5,7 @@ import { Context } from "./MainProvider"
 import MovieTile from "./MovieTile"
 
 interface IMovieTileContainerProps {
-    movies:IMovie[],
+    movies:IMovie[] | undefined,
     isSingleRow:boolean,
     tilesPerRow:number
 }
@@ -16,15 +16,17 @@ export default function MovieTileContainer(props:IMovieTileContainerProps) {
     let watchlists = new Array(2).fill(" ")
 
     // let filledTileCount = props.movies.length + 1
-    let blankTileCount = props.tilesPerRow - (props.movies.length % props.tilesPerRow)
-    if (blankTileCount === props.tilesPerRow && props.movies.length >= props.tilesPerRow) blankTileCount = 0
+    let movies = props.movies === undefined ? new Array(props.tilesPerRow).fill(undefined) : props.movies
+    console.log(movies)
+    let blankTileCount = props.tilesPerRow - (movies.length % props.tilesPerRow)
+    if (blankTileCount === props.tilesPerRow && movies.length >= props.tilesPerRow) blankTileCount = 0
     let blankTiles = new Array(blankTileCount).fill(" ")
 
     const windowSize = useWindowSize()
     
     let tilesPerRow = calculateMovieTilesPerRow(windowSize)
     // const [tilesPerRow, setTilesPerRow] = useState(calculateMovieTilesPerRow(windowSize))
-    let movies = props.movies
+    // let movies = props.movies
     if (props.isSingleRow) movies = movies.slice(0, tilesPerRow)
 
     function calculateMovieTilesPerRow(windowSize:IWindowSize) {
