@@ -7,7 +7,11 @@ import MovieTile from "./MovieTile"
 interface IMovieTileContainerProps {
     movies:IMovie[] | undefined,
     isSingleRow:boolean,
-    tilesPerRow:number
+    tilesPerRow:number,
+    manipulateMovieInWatchlist?: {
+        toggleMovieWatchState: (movie: IMovie) => void;
+        removeMovieFromWatchlist: (movie: IMovie) => void;
+    }
 }
 
 export default function MovieTileContainer(props:IMovieTileContainerProps) {
@@ -42,7 +46,7 @@ export default function MovieTileContainer(props:IMovieTileContainerProps) {
     return (
         <div className="movieTileContainer-container" style={{gridTemplateColumns:`repeat(${tilesPerRow}, minmax(0,1fr))`}}>
             {movies.map((movie, index) => {
-                return <MovieTile key={index} movie={movie}/>
+                return <MovieTile key={index} movie={movie} manipulateMovieInWatchlist={props.manipulateMovieInWatchlist}/>
             })}
 
             {blankTiles.map((blankTile, index) => {

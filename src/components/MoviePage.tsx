@@ -130,6 +130,7 @@ export default function MoviePage() {
                                         src={`https://image.tmdb.org/t/p/w${342}${data.posterPath}?dummy=parameter`}
                                         alt={data.title}
                                         className="moviePage-poster-image"
+                                        style={{width:'calc(100% - 2px)', marginLeft:1}}
                                     />
 
                                 }

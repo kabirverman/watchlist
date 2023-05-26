@@ -71,6 +71,17 @@ export default function WatchlistPage() {
 
     useEffect(()=> {
 
+        sortMovies()
+
+    },[sortOrder])
+
+    useEffect(()=> {
+        console.log('provider state updated')
+        setWatchlistState(providerState.watchlists.find((watchlist) => watchlist.uuid === watchlistId))
+        
+    },[providerState.watchlists])
+
+    function sortMovies() {
         if (watchlistState === undefined) return
 
         // reduces the displayCategories array into an object with the categories as keys and empty arrays as values, then casts to sortedMoviesType
@@ -93,14 +104,43 @@ export default function WatchlistPage() {
         })
 
         setSortedMovies(updatedSortedMovies)
+    }
 
-    },[sortOrder])
 
-    useEffect(()=> {
-        console.log('provider state updated')
-        setWatchlistState(providerState.watchlists.find((watchlist) => watchlist.uuid === watchlistId))
+
+    function toggleMovieWatchState(movie:IMovie) {
+
+        let updatedWatchlists = providerState.watchlists.map((watchlist) => {
+            if (watchlist.uuid === watchlistId) {
+                if (watchlist.movies[movie.movieId].isWatched) watchlist.movies[movie.movieId].isWatched = false
+                else watchlist.movies[movie.movieId].isWatched = true
+            }
+            return watchlist
+        })
+        providerState.updateWatchlists(updatedWatchlists)
+        sortMovies()
         
-    },[providerState.watchlists])
+    }
+
+    function removeMovieFromWatchlist(movie:IMovie) {
+        if (watchlistState === undefined) return
+
+
+        let updatedWatchlists = providerState.watchlists.map((watchlist) => {
+            if (watchlist.uuid === watchlistId) {
+                delete watchlist.movies[movie.movieId]
+            }
+            return watchlist
+        })
+        providerState.updateWatchlists(updatedWatchlists)
+
+        sortMovies()
+
+
+    }
+
+
+
 
 
 
@@ -236,7 +276,7 @@ export default function WatchlistPage() {
                             </div>
                         } */}
                         { windowSize.width > 500 &&
-                            <MovieTileContainer movies={sortedMovies[displayCategory]} isSingleRow={false} tilesPerRow={6} />
+                            <MovieTileContainer movies={sortedMovies[displayCategory]} isSingleRow={false} tilesPerRow={6} manipulateMovieInWatchlist={{toggleMovieWatchState,removeMovieFromWatchlist}}/>
                         }
 					</div>
 				</div>

@@ -163,6 +163,10 @@
         "✂️":{
             "name" : "scissors",
             "path" : "assets/emojis/scissors_flat.svg"
+        },
+        "❌":{
+            "name" : "cross mark",
+            "path" : "assets/emojis/cross_mark_flat.svg"
         }
     },
     "hues" : [
