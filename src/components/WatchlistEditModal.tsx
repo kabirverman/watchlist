@@ -4,6 +4,7 @@ import { getAllWatchlistEmojis, getEmoji } from "../utils/emoji"
 import { getAllHues, getRandomHue } from "../utils/hues"
 import { Context } from "./MainProvider"
 import { v4 as uuidv4 } from 'uuid'
+import { useNavigate } from "react-router-dom"
 
 interface IWatchlistEditModalProps {
     watchlist?:IWatchlist,
@@ -20,6 +21,7 @@ export default function WatchlistEditModal(props:IWatchlistEditModalProps) {
     const [watchlistName, setWatchlistName] = useState(props.watchlist ? props.watchlist.name : "")
     const [watchlistHue, setWatchlistHue] = useState<IHue>(props.watchlist ? props.watchlist.hue : getRandomHue())
     const modalRef = useRef<HTMLDivElement>(null)
+    const navigate = useNavigate()
     
     // const [modalSize, setModalSize] = useState({width:modalRef.current?.clientWidth,height:modalRef.current?.clientHeight})
 
@@ -28,6 +30,17 @@ export default function WatchlistEditModal(props:IWatchlistEditModalProps) {
     //         props.setModalSize({width:modalRef.current?.clientWidth,height:modalRef.current?.clientHeight})
     //     }
     // },[])
+
+    function deleteWatchlist() {
+        if (props.watchlist) {
+            let updatedWatchlists = providerState.watchlists.filter((watchlist) => {
+                return watchlist.uuid !== props.watchlist?.uuid
+            })
+
+            providerState.updateWatchlists(updatedWatchlists)
+            navigate('/')
+        }
+    }
 
     function handlePrimaryButtonClick() {
         if (props.watchlist) {
@@ -170,6 +183,11 @@ export default function WatchlistEditModal(props:IWatchlistEditModalProps) {
                 </div>
 
                 <div style={{marginTop:10, display:'flex'}}>
+                    { props.watchlist &&
+                        <div style={{borderRadius:10, backgroundColor:'#F3F3F3', padding:'5px 15px'}} onClick={() => deleteWatchlist()}>
+                            delete
+                        </div>
+                    }
                         <div style={{display:'flex', justifyContent:'flex-end', width:'100%', gap:10}}>
                             <div style={{borderRadius:10, backgroundColor:'white',boxShadow:`inset 0px 0px 0px 1px ${providerState.hue.defaults.textLarge}`,color:providerState.hue.defaults.textLarge, padding:'5px 15px', fontWeight:500, cursor:'pointer'}} onClick={handleCancelButtonClick}>
                                 cancel

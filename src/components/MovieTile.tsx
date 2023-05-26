@@ -69,7 +69,7 @@ export default function MovieTile(props:IMovieTileProps) {
     function showImage() {
         if (props.movie === undefined) {
             return (
-                <div className="placeholderGradientAnimation" style={{backgroundColor:providerState.hue.defaults.textLarge, borderRadius:10, width:'100%', aspectRatio:'2/3'}}/>
+                <div className="placeholderGradientAnimation" style={{backgroundColor:providerState.hue.defaults.textSmall, opacity:0.1, borderRadius:10, width:'100%', aspectRatio:'2/3'}}/>
             )
         }
 

@@ -5,6 +5,7 @@ import { ICastTileProps } from "./CastTile"
 
 export default function CastTileMobile(props:ICastTileProps) {
     const [isImageFound, setIsImageFound] = useState(true)
+    const [isImageLoaded, setIsImageLoaded] = useState(false)
 
 
     function showImage() {
@@ -16,17 +17,21 @@ export default function CastTileMobile(props:ICastTileProps) {
 
         if (isImageFound) {
             return (
-                <img
-                    className="starTile-image"
-                    src={`https://image.tmdb.org/t/p/w200${props.castMember.posterPath}?dummy=parameter`}
-                    alt={`${props.castMember.name}`}
-                    style={{maxWidth:'100%', maxHeight:'100%',width:'100%', objectFit:'cover', borderRadius:10}}
-                    onError={()=> {
-                        console.log('oops')
-                        setIsImageFound(false)
-                        // setShouldShowPlaceholder(true)
-                    }}
-                />
+                <div style={{position:'relative', width:'100%', height:'100%'}}>
+                    <div style={{position:'absolute', borderRadius:'10px 0px 0px 10px', width:'100%', height:'100%', backgroundColor:props.hue.defaults.textSmall, opacity:isImageLoaded? 0 : 0.2, transition:`opacity ${500 + Math.random()*1000}ms`}} />
+                    <img
+                        className="starTile-image"
+                        src={`https://image.tmdb.org/t/p/w200${props.castMember.posterPath}?dummy=parameter`}
+                        alt={`${props.castMember.name}`}
+                        style={{maxWidth:'100%', maxHeight:'100%',width:'100%', objectFit:'cover', borderRadius:10, opacity:isImageLoaded? 1 : 0, transition:`opacity ${500 + Math.random()*1000}ms`}}
+                        onError={()=> {
+                            console.log('oops')
+                            setIsImageFound(false)
+                            // setShouldShowPlaceholder(true)
+                        }}
+                        onLoad={()=> setIsImageLoaded(true)}
+                    />
+                </div>
             )
         }
 

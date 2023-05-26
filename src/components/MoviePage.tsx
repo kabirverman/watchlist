@@ -33,6 +33,7 @@ export default function MoviePage() {
     const {data, isLoading} = useQuery({queryKey: [movieId], queryFn: () => fetchMovieDetails(movieId!), enabled:true, refetchOnWindowFocus:false})
     const [showAddMovieToWatchlistModal, setShowAddMovieToWatchlistModal] = useState(false)
     const [modalSize, setModalSize] = useState({width:0, height:0})
+    const [isMoviePosterLoaded, setIsMoviePosterLoaded] = useState(false)
 
     // const [hue, setHue] = useState<IHue>(providerState.hue)
     const windowSize = useWindowSize()
@@ -70,8 +71,8 @@ export default function MoviePage() {
             return (
                 <div className="moviePage-titleTile" style={{backgroundColor:providerState.hue.defaults.panel, boxShadow:`inset 0px 0px 0px 1px ${providerState.hue.defaults.border}`,gap:10}}>
                     {/* <h1 className="moviePage-titleTile-title placeholderGradientAnimation" style={{color:'transparent', width:'fit-content',backgroundColor:providerState.hue.defaults.textLarge, borderRadius:10}}>title of the movie here</h1> */}
-                    <div className="placeholderGradientAnimation" style={{width:'min(400px,90%)', height:32, backgroundColor:providerState.hue.defaults.textLarge, borderRadius:8}}/>
-                    <div className="moviePage-titleTile-info placeholderGradientAnimation" style={{marginTop:10,color:'transparent', width:'fit-content',backgroundColor:providerState.hue.defaults.textLarge, borderRadius:8, fontWeight:500}}>
+                    <div className="placeholderGradientAnimation" style={{width:'min(400px,90%)', height:32, backgroundColor:providerState.hue.defaults.textSmall, opacity:0.2, borderRadius:8}}/>
+                    <div className="moviePage-titleTile-info placeholderGradientAnimation" style={{marginTop:10,color:'transparent', width:'fit-content',backgroundColor:providerState.hue.defaults.textSmall, opacity:0.2, borderRadius:8, fontWeight:500}}>
                         <p>year goes here and genre as well</p>
                     </div>
                 </div>
@@ -98,8 +99,8 @@ export default function MoviePage() {
         if (data === undefined || isLoading) {
             return (
                 <div className="moviePage-overviewTile" style={{backgroundColor:providerState.hue.defaults.panel, boxShadow:`inset 0px 0px 0px 1px ${providerState.hue.defaults.border}`}}>
-                    <h3 className="moviePage-overviewTile-title" style={{color:providerState.hue.defaults.textLarge}}>overview</h3>
-                    <div className="placeholderGradientAnimation" style={{backgroundColor:providerState.hue.defaults.textLarge, borderRadius:8, height:80}}/>
+                    <h3 className="moviePage-overviewTile-title" style={{color:providerState.hue.defaults.textSmall, opacity:0.2}}>overview</h3>
+                    <div className="placeholderGradientAnimation" style={{backgroundColor:providerState.hue.defaults.textSmall, opacity:0.2, borderRadius:8, height:80}}/>
                 </div>
             )
         }
@@ -113,6 +114,24 @@ export default function MoviePage() {
     }
 
     
+    function showMoviePoster() {
+        if (data === undefined || isLoading) {
+            return <div className="moviePage-poster-image placeholderGradientAnimation" style={{aspectRatio:'2/3', height:'100%', backgroundColor:providerState.hue.defaults.textSmall, opacity:0.2}}/>
+        }
+
+        return (
+            <div style={{position:'relative', lineHeight:0,width:'100%', height:'100%',aspectRatio:'2/3'}}>
+                <div style={{position:'absolute', width:'100%', height:'100%', borderRadius:'10px 10px 0px 0px',backgroundColor:providerState.hue.defaults.textSmall, opacity:isMoviePosterLoaded? 0 : 0.2,transition:`opacity ${500 + Math.random()*1000}ms`}} />
+                <img
+                    src={`https://image.tmdb.org/t/p/w${342}${data.posterPath}?dummy=parameter`}
+                    alt={data.title}
+                    className="moviePage-poster-image"
+                    style={{width:'calc(100% - 2px)', marginLeft:1, opacity:isMoviePosterLoaded ? 1 : 0, transition:`opacity ${500 + Math.random()*1000}ms`}}
+                    onLoad={()=>setIsMoviePosterLoaded(true)}
+                />
+            </div>
+        )
+    }
 
 
 
@@ -124,16 +143,7 @@ export default function MoviePage() {
                     <div style={{display:'grid', gridTemplateColumns:'min(300px, 30%) 1fr', gap:20}}>
                         <div className="moviePage-posterColumn">
                             <div className="moviePage-poster-container" style={{backgroundColor:providerState.hue.defaults.panel, boxShadow:`inset 0px 0px 0px 1px ${providerState.hue.defaults.border}`}}>
-                                { isLoading || data === undefined
-                                    ? <div className="moviePage-poster-image placeholderGradientAnimation" style={{aspectRatio:'2/3', backgroundColor:providerState.hue.defaults.textLarge}}/>
-                                    : <img
-                                        src={`https://image.tmdb.org/t/p/w${342}${data.posterPath}?dummy=parameter`}
-                                        alt={data.title}
-                                        className="moviePage-poster-image"
-                                        style={{width:'calc(100% - 2px)', marginLeft:1}}
-                                    />
-
-                                }
+                                { showMoviePoster() }
                                 
                                 <div style={{borderRadius:'0px 0px 10px 10px', padding:'10px 15px', display:'grid', gridTemplateColumns:'1fr 1fr', justifyItems:'center', fontWeight:500}}>
                                     <p>{data === undefined || isLoading ? 'RUNTIME' : calculateTime(data.runtime)}</p>
@@ -159,7 +169,7 @@ export default function MoviePage() {
                                             alt={getEmoji("🎬").name}
                                             style={{width:25,height:25}}
                                         />
-                                        {data === undefined || isLoading ? <p className="placeholderGradientAnimation" style={{backgroundColor:providerState.hue.defaults.textLarge, color:'transparent', borderRadius:8, width:'fit-content'}}>director name goes here</p> : <p>{data.creators.directors.join(", ")}</p>}
+                                        {data === undefined || isLoading ? <p className="placeholderGradientAnimation" style={{backgroundColor:providerState.hue.defaults.textSmall, opacity:0.2, color:'transparent', borderRadius:8, width:'fit-content'}}>director name goes here</p> : <p>{data.creators.directors.join(", ")}</p>}
                                         
                                     </div>
                                     <div style={{display:'flex', gap:10, alignItems:'center'}}>
@@ -169,7 +179,7 @@ export default function MoviePage() {
                                             alt={getEmoji("✏️").name}
                                             style={{width:25,height:25}}
                                         />
-                                        {data === undefined || isLoading ? <p className="placeholderGradientAnimation" style={{backgroundColor:providerState.hue.defaults.textLarge, color:'transparent', borderRadius:8, width:'fit-content'}}>writer names go here. swag money</p> : <p>{data.creators.writers.join(", ")}</p>}
+                                        {data === undefined || isLoading ? <p className="placeholderGradientAnimation" style={{backgroundColor:providerState.hue.defaults.textSmall, opacity:0.2, color:'transparent', borderRadius:8, width:'fit-content'}}>writer names go here. swag money</p> : <p>{data.creators.writers.join(", ")}</p>}
                                         {/* <p>{data.creators.writers.join(", ")}</p> */}
                                     </div>
                                 </div>
@@ -193,15 +203,7 @@ export default function MoviePage() {
 
                         <div style={{display:'grid', gridTemplateColumns:'175px 1fr', gap:10}}>
                             <div className="moviePage-poster-container" style={{backgroundColor:providerState.hue.defaults.panel, boxShadow:`inset 0px 0px 0px 1px ${providerState.hue.defaults.border}`}}>
-                                { isLoading || data === undefined
-                                    ? <div className="moviePage-poster-image placeholderGradientAnimation" style={{aspectRatio:'2/3', backgroundColor:providerState.hue.defaults.textLarge}}/>
-                                    : <img
-                                        src={`https://image.tmdb.org/t/p/w${342}${data.posterPath}?dummy=parameter`}
-                                        alt={data.title}
-                                        className="moviePage-poster-image"
-                                    />
-
-                                }
+                                { showMoviePoster() }
  
                             </div>
 
@@ -214,7 +216,7 @@ export default function MoviePage() {
                                         alt={getEmoji("🎬").name}
                                         style={{width:25,height:25}}
                                     />
-                                    {data === undefined || isLoading ? <p className="placeholderGradientAnimation" style={{backgroundColor:providerState.hue.defaults.textLarge, color:'transparent', borderRadius:8, width:'fit-content'}}>director name goes here</p> : <p>{data.creators.directors.join(", ")}</p>}
+                                    {data === undefined || isLoading ? <p className="placeholderGradientAnimation" style={{backgroundColor:providerState.hue.defaults.textSmall, opacity:0.2, color:'transparent', borderRadius:8, width:'fit-content'}}>director name goes here</p> : <p>{data.creators.directors.join(", ")}</p>}
                                     {/* <p>{data.creators.directors.join(", ")}</p> */}
                                 </div>
                                 <div className="moviePage-creatorTile" style={{backgroundColor:providerState.hue.defaults.panel, boxShadow:`inset 0px 0px 0px 1px ${providerState.hue.defaults.border}`}}>
@@ -224,7 +226,7 @@ export default function MoviePage() {
                                         alt={getEmoji("✏️").name}
                                         style={{width:25,height:25}}
                                     />
-                                    {data === undefined || isLoading ? <p className="placeholderGradientAnimation" style={{backgroundColor:providerState.hue.defaults.textLarge, color:'transparent', borderRadius:8, width:'fit-content'}}>writer names go here. swag money</p> : <p>{data.creators.writers.join(", ")}</p>}
+                                    {data === undefined || isLoading ? <p className="placeholderGradientAnimation" style={{backgroundColor:providerState.hue.defaults.textSmall, opacity:0.2, color:'transparent', borderRadius:8, width:'fit-content'}}>writer names go here. swag money</p> : <p>{data.creators.writers.join(", ")}</p>}
                                     {/* <p>{data.creators.writers.join(", ")}</p> */}
                                 </div>
                             </div>

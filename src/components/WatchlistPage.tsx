@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from "react"
-import { useLocation, useParams } from "react-router-dom"
+import { useLocation, useNavigate, useParams } from "react-router-dom"
 import useWindowSize from "../hooks/useWindowSize"
 import { IMovie, IWatchlist } from "../Interfaces"
 import { getEmoji } from "../utils/emoji"
@@ -17,7 +17,8 @@ export default function WatchlistPage() {
 
     const providerState = useContext(Context)
     const windowSize = useWindowSize()
-
+    
+    const navigate = useNavigate()
     const location = useLocation()
     
     // let watchlist = providerState.watchlists.find((watchlist) => watchlist.uuid === watchlistId)
@@ -245,7 +246,7 @@ export default function WatchlistPage() {
         )
     }
 
-    
+    if (watchlistState === undefined) return <div></div>
     
     return (
 			<div className="watchlistPage">
