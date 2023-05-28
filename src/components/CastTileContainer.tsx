@@ -16,6 +16,16 @@ export default function CastTileContainer(props: ICastTileContainerProps) {
     const [isHoveringMore, setIsHoveringMore] = useState(false)
     const placeholderArray = new Array(numberToShow).fill(undefined)
     const castArray = props.cast === undefined ? new Array(numberToShow).fill(undefined) : props.cast.slice(0,numberToShow)
+    const [castPage, setCastPage] = useState(1)
+
+    
+    let visibleTiles = props.cast?.slice(numberToShow*castPage - numberToShow ,Math.min(numberToShow*castPage,props.cast?.length??0)).length??0
+    console.log(props.cast?.length,Math.min(numberToShow*castPage,props.cast?.length??0))
+    let blankTileCount = numberToShow - visibleTiles
+
+    // let blankTiles = new Array(blankTileCount).fill(" ")
+    console.log(blankTileCount)
+    console.log(visibleTiles)
 
     useEffect(()=> {
         if (numberToShow === 6 && windowSize.width <= 1000) {
@@ -26,28 +36,47 @@ export default function CastTileContainer(props: ICastTileContainerProps) {
         }
     },[windowSize])
 
+    function tryCastPage(page:number) {
+        if (props.cast === undefined) return
+
+        if (page <= 0) return
+        if (page > Math.ceil(props.cast.length/numberToShow)) return
+
+        setCastPage(page)
+
+    }
+
+    let canGoNext = castPage < Math.ceil((props.cast?.length??0)/numberToShow)
+    let canGoPrev = castPage > 1
 
     return (
         <div>
             <div style={{display:'grid', gridTemplateColumns:windowSize.width > 1000 ? '1fr 1fr 1fr' : '1fr 1fr', gap:10}}>
-                {/* { props.cast === undefined
-                    ?placeholderArray.map(() => {
-                        return <div className="placeholderGradientAnimation" style={{height:66, backgroundColor:props.hue.defaults.textLarge, borderRadius:10}}/>
-                    })
-                    :props.cast.slice(0,numberToShow).map((castMember, index) => {
-                        return <CastTile key={castMember.name} castMember={castMember} hue={props.hue}/>  
-                    })
 
-                } */}
-                {castArray.map((castMember, index) => {
+                {/* {castArray.map((castMember, index) => {
+                    return <CastTile key={castMember?.name??index} castMember={castMember} hue={props.hue}/>  
+                })} */}
+                {props.cast !== undefined && props.cast.slice(numberToShow*castPage - numberToShow ,numberToShow*castPage).map((castMember, index) => {
                     return <CastTile key={castMember?.name??index} castMember={castMember} hue={props.hue}/>  
                 })}
 
+                { blankTileCount > 0 && Array(blankTileCount).fill(undefined).map((item) => {
+                        return <div style={{backgroundColor:'#f7f7f7', minHeight:103, borderRadius:10}}/>
+                    })
+                }
+
             </div>
 
-            <div style={{display:'flex', alignItems:'center', justifyContent:'center', gap:5, paddingTop:5}}>
-                {/* <div  style={{backgroundColor:'black', height:1, width:'100%'}}/> */}
-                { props.cast !== undefined && props.cast.length > numberToShow &&
+            <div style={{display:'flex', alignItems:'center', justifyContent:'center', gap:20, paddingTop:5}}>
+                <svg xmlns="http://www.w3.org/2000/svg" style={{transform:'rotate(180deg)',color:canGoPrev ? '' : 'grey', cursor:canGoPrev ? 'pointer' : 'default'}} onClick={()=>tryCastPage(castPage-1)} width="20" height="20" viewBox="0 0 24 24" fill="none">
+                    <path d="M9 4L17 12L9 20" style={{strokeWidth:1.5, strokeLinecap:'round', strokeLinejoin:'round', stroke:'currentcolor'}}/>
+                </svg>
+                <p>{castPage}/{Math.ceil((props.cast?.length??0)/numberToShow)}</p>
+                <svg xmlns="http://www.w3.org/2000/svg" style={{color:canGoNext ? '' : 'grey', cursor:canGoNext ? 'pointer' : 'default'}} onClick={()=>tryCastPage(castPage+1)} width="20" height="20" viewBox="0 0 24 24" fill="none">
+                    <path d="M9 4L17 12L9 20" style={{strokeWidth:1.5, strokeLinecap:'round', strokeLinejoin:'round', stroke:'currentcolor'}}/>
+                </svg>
+
+                {/* { props.cast !== undefined && props.cast.length > numberToShow &&
                     <div style={{display:'flex', gap:2, cursor:'pointer', alignItems:'center'}}
                     onClick={()=>{setNumberToShow(numberToShow + 6)}}
                     onMouseOver={()=>setIsHoveringMore(true)}
@@ -59,8 +88,8 @@ export default function CastTileContainer(props: ICastTileContainerProps) {
                         </svg>
 
                     </div>
-                }
-                {/* <div  style={{backgroundColor:'black', height:1, width:'100%'}}/> */}
+                } */}
+
             </div>
         </div>
     )

@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react"
+import { useContext, useEffect, useRef, useState } from "react"
 import { useLocation, useNavigate, useParams } from "react-router-dom"
 import useWindowSize from "../hooks/useWindowSize"
 import { IMovie, IWatchlist } from "../Interfaces"
@@ -42,6 +42,8 @@ export default function WatchlistPage() {
     const [shouldShowEditModal, setShouldShowEditModal] = useState(false)
 
     const [heroSVG, setHeroSVG] = useState("")
+
+    const editModalRef = useRef<HTMLDivElement>(null)
     
 
     
@@ -55,7 +57,7 @@ export default function WatchlistPage() {
 
         let fontSize = '70px'
         if (windowSize.width > 500) {
-            setHeroSVG(`url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' version='1.1' height='200px'><text x='15' y='27%' fill='black' font-size='${fontSize}' font-weight='600' opacity='0.025' font-family='Noto Sans,Helvetica Neue,Helvetica,Arial,sans-serif'>${Array(10).fill(watchlistState.name).join(" ")}</text><text x='-50' y='60%' fill='black' font-size='${fontSize}' font-weight='600' opacity='0.025' font-family='Noto Sans,Helvetica Neue,Helvetica,Arial,sans-serif'>${Array(9).fill(watchlistState.name).join(" ")}</text><text x='-100' y='93%' fill='black' font-size='${fontSize}' font-weight='600' opacity='0.025' font-family='Noto Sans,Helvetica Neue,Helvetica,Arial,sans-serif'>${Array(8).fill(watchlistState.name).join(" ")}</text></svg>")`)
+            setHeroSVG(`url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' version='1.1' height='200px'><text x='15' y='27%' fill='black' font-size='${fontSize}' font-weight='600' opacity='0.025' font-family='Noto Sans,Helvetica Neue,Helvetica,Arial,sans-serif'>${Array(20).fill(watchlistState.name).join(" ")}</text><text x='-50' y='60%' fill='black' font-size='${fontSize}' font-weight='600' opacity='0.025' font-family='Noto Sans,Helvetica Neue,Helvetica,Arial,sans-serif'>${Array(20).fill(watchlistState.name).join(" ")}</text><text x='-100' y='93%' fill='black' font-size='${fontSize}' font-weight='600' opacity='0.025' font-family='Noto Sans,Helvetica Neue,Helvetica,Arial,sans-serif'>${Array(20).fill(watchlistState.name).join(" ")}</text></svg>")`)
         }
 
         
@@ -81,6 +83,19 @@ export default function WatchlistPage() {
         setWatchlistState(providerState.watchlists.find((watchlist) => watchlist.uuid === watchlistId))
         
     },[providerState.watchlists])
+
+
+    useEffect(() => {
+        function handleClickOutside(event:any) {
+            if (shouldShowEditModal && !editModalRef.current!.contains(event.target)) {
+                setShouldShowEditModal(false)
+            }
+        }
+        document.addEventListener("mousedown", handleClickOutside);
+        return () => {
+            document.removeEventListener("mousedown", handleClickOutside);
+        };
+    }, [shouldShowEditModal]);
 
     function sortMovies() {
         if (watchlistState === undefined) return
@@ -218,6 +233,9 @@ export default function WatchlistPage() {
         )
     }
 
+    
+    
+
 
     function showButtonRow() {
         return (
@@ -229,8 +247,9 @@ export default function WatchlistPage() {
                         <img src={require(`../${gearEmoji.path}`)} alt={gearEmoji.name} style={{width:20, height:20}} />
                         <p style={{fontWeight:500, color:watchlistState?.hue.defaults.textSmall}}>settings</p>
                     </div>
+                    
                     { shouldShowEditModal &&
-                        <div style={{position:'absolute', transform:`translate(-15px,0px`, zIndex:2}}>
+                        <div ref={editModalRef} style={{position:'absolute', transform:`translate(-15px,0px`, zIndex:2}}>
                             <WatchlistEditModal watchlist={watchlistState} closeModal={()=>setShouldShowEditModal(false)}/>
                         </div>
                     }

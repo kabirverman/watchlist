@@ -40,7 +40,7 @@ export default function CastTile(props:ICastTileProps) {
         }
 
         return (
-            <div style={{position:'absolute', backgroundColor:props.hue.defaults.textLarge, borderRadius:'10px 0px 0px 10px', top:0, bottom:0, display:'flex', width:66,alignItems:'center', justifyContent:'center'}}>
+            <div style={{position:'absolute', backgroundColor:props.hue.defaults.border, borderRadius:'10px 0px 0px 10px', top:0, bottom:0, display:'flex', width:66,alignItems:'center', justifyContent:'center'}}>
                 <p style={{textAlign:'center', color:'white', lineHeight:'16px'}}>no image</p>
             </div>
         )

@@ -22,6 +22,7 @@ export default function WatchlistEditModal(props:IWatchlistEditModalProps) {
     const [watchlistHue, setWatchlistHue] = useState<IHue>(props.watchlist ? props.watchlist.hue : getRandomHue())
     const modalRef = useRef<HTMLDivElement>(null)
     const navigate = useNavigate()
+    const [showingDeleteConfirmation, setShowingDeleteConfirmation] = useState(false)
     
     // const [modalSize, setModalSize] = useState({width:modalRef.current?.clientWidth,height:modalRef.current?.clientHeight})
 
@@ -100,7 +101,22 @@ export default function WatchlistEditModal(props:IWatchlistEditModalProps) {
     }
 
 
+    function showDeleteButton() {
 
+        if (showingDeleteConfirmation) {
+            return (
+                <div style={{borderRadius:10, backgroundColor:'white', boxShadow:`inset 0px 0px 0px 1px red`,color:'red', padding:'5px 15px', cursor:'pointer'}} onClick={() => deleteWatchlist()}>
+                    really?
+                </div>
+            )
+        }
+
+        return (
+            <div style={{borderRadius:10, backgroundColor:'#F3F3F3', padding:'5px 15px', cursor:'pointer'}} onClick={() => setShowingDeleteConfirmation(true)}>
+                delete
+            </div>
+        )
+    }
 
     return (
         <div ref={modalRef} style={{backgroundColor:'white', borderRadius:10, margin:15, boxShadow:'0px 0px 15px rgba(0,0,0,0.25)'}}>
@@ -183,11 +199,7 @@ export default function WatchlistEditModal(props:IWatchlistEditModalProps) {
                 </div>
 
                 <div style={{marginTop:10, display:'flex'}}>
-                    { props.watchlist &&
-                        <div style={{borderRadius:10, backgroundColor:'#F3F3F3', padding:'5px 15px'}} onClick={() => deleteWatchlist()}>
-                            delete
-                        </div>
-                    }
+                    { props.watchlist && showDeleteButton() }
                         <div style={{display:'flex', justifyContent:'flex-end', width:'100%', gap:10}}>
                             <div style={{borderRadius:10, backgroundColor:'white',boxShadow:`inset 0px 0px 0px 1px ${providerState.hue.defaults.textLarge}`,color:providerState.hue.defaults.textLarge, padding:'5px 15px', fontWeight:500, cursor:'pointer'}} onClick={handleCancelButtonClick}>
                                 cancel
