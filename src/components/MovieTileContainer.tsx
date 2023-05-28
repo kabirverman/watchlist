@@ -6,7 +6,8 @@ import MovieTile from "./MovieTile"
 
 interface IMovieTileContainerProps {
     movies:IMovie[] | undefined,
-    isSingleRow:boolean,
+    // isSingleRow:boolean,
+    numberOfRows:number,
     tilesPerRow:number,
     manipulateMovieInWatchlist?: {
         toggleMovieWatchState: (movie: IMovie) => void;
@@ -31,7 +32,8 @@ export default function MovieTileContainer(props:IMovieTileContainerProps) {
     let tilesPerRow = calculateMovieTilesPerRow(windowSize)
     // const [tilesPerRow, setTilesPerRow] = useState(calculateMovieTilesPerRow(windowSize))
     // let movies = props.movies
-    if (props.isSingleRow) movies = movies.slice(0, tilesPerRow)
+    // if (props.isSingleRow) movies = movies.slice(0, tilesPerRow)
+    if (props.numberOfRows !== 0) movies = movies.slice(0, props.numberOfRows*tilesPerRow)
 
     function calculateMovieTilesPerRow(windowSize:IWindowSize) {
         let tilesPerRow = 6

@@ -163,6 +163,14 @@ input:focus-visible {
   gap:30px;
 }
 
+.watchlistTile-create-container {
+  transform:scale(1);
+  transition: transform 150ms  cubic-bezier(0.29, 0.44, 0.17, 1.01);
+}
+.watchlistTile-create-container:hover {
+  transform:scale(1.05);
+}
+
 
 .watchlistTile-container {
   width:100%;

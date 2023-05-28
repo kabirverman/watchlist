@@ -120,7 +120,7 @@ export default function MoviePage() {
         }
 
         return (
-            <div style={{position:'relative', lineHeight:0,width:'100%', height:'100%',aspectRatio:'2/3'}}>
+            <div style={{position:'relative', lineHeight:0,width:'100%', height:'100%', aspectRatio:isMoviePosterLoaded? '0':'2/3'}}>
                 <div style={{position:'absolute', width:'100%', height:'100%', borderRadius:'10px 10px 0px 0px',backgroundColor:providerState.hue.defaults.textSmall, opacity:isMoviePosterLoaded? 0 : 0.2,transition:`opacity ${500 + Math.random()*1000}ms`}} />
                 <img
                     src={`https://image.tmdb.org/t/p/w${342}${data.posterPath}?dummy=parameter`}
@@ -255,7 +255,7 @@ export default function MoviePage() {
                 { windowSize.width > 500 &&
                     <div style={{display:'flex', flexDirection:'column', gap:20}}>
                         <b style={{fontSize:20}}>similar movies</b>
-                        <MovieTileContainer movies={data ? data.similarMovies.slice(0,6) : undefined} isSingleRow={true} tilesPerRow={6}/>
+                        <MovieTileContainer movies={data ? data.similarMovies.slice(0,6) : undefined} numberOfRows={1} tilesPerRow={6}/>
                         {/* <MovieTileContainer movies={undefined} isSingleRow={true} tilesPerRow={6}/> */}
 
                     </div>

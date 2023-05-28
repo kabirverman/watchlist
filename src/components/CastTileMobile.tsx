@@ -11,14 +11,14 @@ export default function CastTileMobile(props:ICastTileProps) {
     function showImage() {
         if (props.castMember === undefined) {
             return (
-                <div className="placeholderGradientAnimation" style={{position:'absolute', backgroundColor:props.hue.defaults.textLarge, borderRadius:10, top:0, bottom:0, display:'flex', width:'100%',alignItems:'center', justifyContent:'center'}}/>
+                <div className="placeholderGradientAnimation" style={{position:'absolute', backgroundColor:props.hue.defaults.textSmall,opacity:0.2, borderRadius:10, top:0, bottom:0, display:'flex', width:'100%',alignItems:'center', justifyContent:'center'}}/>
             )
         }
 
         if (isImageFound) {
             return (
                 <div style={{position:'relative', width:'100%', height:'100%'}}>
-                    <div style={{position:'absolute', borderRadius:'10px 0px 0px 10px', width:'100%', height:'100%', backgroundColor:props.hue.defaults.textSmall, opacity:isImageLoaded? 0 : 0.2, transition:`opacity ${500 + Math.random()*1000}ms`}} />
+                    <div style={{position:'absolute', borderRadius:10, width:'100%', height:'100%', backgroundColor:props.hue.defaults.textSmall, opacity:isImageLoaded? 0 : 0.2, transition:`opacity ${500 + Math.random()*1000}ms`}} />
                     <img
                         className="starTile-image"
                         src={`https://image.tmdb.org/t/p/w200${props.castMember.posterPath}?dummy=parameter`}

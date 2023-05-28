@@ -33,7 +33,7 @@ export default function MovieTileWatchlistButtons(props:IMovieTileWatchlistButto
                     <img
                         src={require(`../${eyeEmoji.path}`)}
                         alt={eyeEmoji.name}
-                        style={{width:20, height:20, backgroundColor:'rgba(255,255,255,0.75)', padding:5, borderRadius:20}}
+                        style={{width:20, height:20, backgroundColor:'rgba(255,255,255,0.75)', padding:5, borderRadius:8}}
                         onClick={() => {
                             props.manipulateMovieInWatchlist?.toggleMovieWatchState(props.movie!)
                             // setShowDropdown(false)
@@ -51,7 +51,7 @@ export default function MovieTileWatchlistButtons(props:IMovieTileWatchlistButto
                     <img
                         src={require(`../${crossMarkEmoji.path}`)}
                         alt={crossMarkEmoji.name}
-                        style={{width:20, height:20, backgroundColor:'rgba(255,255,255,0.75)', padding:5, borderRadius:20}}
+                        style={{width:20, height:20, backgroundColor:'rgba(255,255,255,0.75)', padding:5, borderRadius:8}}
                         onClick={() => {
                             props.manipulateMovieInWatchlist?.removeMovieFromWatchlist(props.movie!)
                             // setShowDropdown(false)

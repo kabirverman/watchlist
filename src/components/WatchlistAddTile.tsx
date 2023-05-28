@@ -70,6 +70,7 @@ export default function WatchlistAddTile(props:IWatchlistAddTileProps) {
 
         return (
             <div
+                className="watchlistTile-create-container"
                 style={{display:'flex', flexDirection:'column', justifyContent:'center', alignItems:'center', height:'100%'}}
                 onClick={()=>{
                     setIsCreatingNewWatchlist(true)

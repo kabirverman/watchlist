@@ -35,7 +35,7 @@ function calculateWatchlistTilesPerRow(windowSize:IWindowSize) {
 }
 
 function calculateMoviesToShow(windowSize:IWindowSize) {
-    let numberToShow = 6
+    let numberToShow = 12
 
     if (windowSize.width <= 1000) numberToShow = 8
 
@@ -85,6 +85,8 @@ function WatchlistTileContainer(props:IWatchlistTileContainerProps) {
 
     let filledTileCount = providerState.watchlists.length + 1
     let blankTileCount = props.tilesPerRow - (filledTileCount % props.tilesPerRow)
+    console.log(props.tilesPerRow - (filledTileCount % props.tilesPerRow))
+    console.log(props.tilesPerRow - (filledTileCount % props.tilesPerRow-1))
     if (blankTileCount === filledTileCount && filledTileCount >= props.tilesPerRow) blankTileCount = 0
     let blankTiles = new Array(blankTileCount).fill(" ")
 
@@ -196,7 +198,7 @@ export default function Homepage(props:IHomepageProps) {
                     <b style={{fontSize:20, color:providerState.hue.defaults.textLarge}}>trending movies</b>
                     {
                         windowSize.width > 500 &&
-                        <MovieTileContainer movies={trendingMovies} isSingleRow={true} tilesPerRow={movieTilesPerRow}/>
+                        <MovieTileContainer movies={trendingMovies} numberOfRows={2} tilesPerRow={movieTilesPerRow}/>
                     }
                     
                 </div>

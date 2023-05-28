@@ -4,6 +4,7 @@ import { fetchMovieSearch } from "../fetch"
 import { useDebounce } from "../hooks/useDebounce"
 import { IHue, IMovie } from "../Interfaces"
 import SearchBarItem from "./SearchBarItem"
+import SearchBarItemPlaceholder from "./SearchBarItemPlaceholder"
 
 interface ISearchBarProps {
     hue:IHue
@@ -41,8 +42,16 @@ export default function SearchBar(props:ISearchBarProps) {
     function showSearchResults() {
         console.log(search,data === undefined,  isWaitingForDebounce)
         if (search === "") return
-        if (data === undefined) return
-        if (isWaitingForDebounce) return
+        if (data === undefined || isWaitingForDebounce) return (
+        // return ( 
+            <div>
+                <SearchBarItemPlaceholder setIsFocusingSearch={setIsFocusingSearch}/>
+                <SearchBarItemPlaceholder setIsFocusingSearch={setIsFocusingSearch}/>
+                <SearchBarItemPlaceholder setIsFocusingSearch={setIsFocusingSearch}/>
+            </div>
+        )
+        // if (data === undefined) return
+        // if (isWaitingForDebounce) return
 
         // let shouldShow = areAllImagesLoaded && debouncedSearch === search && !hideSearchResults
         let shouldShow = debouncedSearch === search && isFocusingSearch
@@ -50,7 +59,7 @@ export default function SearchBar(props:ISearchBarProps) {
         
         return (
             <div style={{visibility:shouldShow ? 'visible': 'hidden', position:shouldShow ? 'initial' : 'absolute'}}>
-                {data.slice(0,maxResults).map((movie:IMovie, index:number)=> {
+                {data?.slice(0,maxResults).map((movie:IMovie, index:number)=> {
                     return (
                         <SearchBarItem key={movie.movieId} movie={movie} setIsFocusingSearch={setIsFocusingSearch}/>
                         // <div>
@@ -59,9 +68,10 @@ export default function SearchBar(props:ISearchBarProps) {
                         // <SearchResultItem key={result.id} index={index} title={result.title} year={year} poster={result.poster_path} genreIds={result.genre_ids} result={result} isPlaceHolder={false} setImageLoadStatusArray={setImageLoadStatusArray} setHideSearchResults={setHideSearchResults}/>
                         )
                     })}
-                <div style={{height:30, display:'flex', alignItems:'center', paddingLeft:'10px', cursor:'pointer'}}>
+                {/* <div style={{height:30, display:'flex', alignItems:'center', paddingLeft:'10px', cursor:'pointer'}}>
                     <p style={{margin:0, fontSize:'14px'}} onClick={()=>{}} >see all results for "{debouncedSearch}"</p>
-                </div>
+                </div> */}
+                <div style={{height:20, display:'flex', alignItems:'center', paddingLeft:'10px'}}/>
             </div>
         )
     }
@@ -110,7 +120,7 @@ export default function SearchBar(props:ISearchBarProps) {
                 
             </div>
             <div className="searchBar-results-container">
-                <div style={{backgroundColor:'white', borderRadius:'0px 0px 5px 5px', boxShadow:'0px 10px 20px 0px rgba(0,0,0,0.25)'}}>
+                <div style={{backgroundColor:'white', borderRadius:5, boxShadow:'0px 10px 20px 0px rgba(0,0,0,0.25)'}}>
                     {showSearchResults()}
                 </div>
 

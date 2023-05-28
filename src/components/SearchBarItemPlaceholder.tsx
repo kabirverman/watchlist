@@ -6,7 +6,7 @@ import { Context } from "./MainProvider"
 import MovieTile from "./MovieTile"
 
 interface ISearchBarItemProps {
-    movie:IMovie,
+    // movie:IMovie,
     setIsFocusingSearch: React.Dispatch<React.SetStateAction<boolean>>
 }
 
@@ -14,7 +14,11 @@ export default function SearchBarItem(props:ISearchBarItemProps) {
 
     const [navigateToMoviePage, setNavigateToMoviePage] = useState(false)
     const [hue, setHue] = useState<IHue>(getRandomHue())
+    const [titleWidth, setTitleWidth] = useState<number>(100 + Math.random()*200)
+    const [detailsWidth, setDetailsWidth] = useState<number>(100 + Math.random()*100)
     const [isHovering, setIsHovering] = useState(false)
+
+    // const getRandomHue()
 
 
     
@@ -28,24 +32,15 @@ export default function SearchBarItem(props:ISearchBarItemProps) {
             onMouseOver={()=>setIsHovering(true)}
             onMouseOut={()=>setIsHovering(false)}
         >
-            <div style={{width:50, height:75, flexShrink:0}}>
-                {   props.movie.posterPath === null 
-
-                    ? <div style={{width:50, aspectRatio:'2/3', borderRadius:5, backgroundColor:'red'}}/>
-                    // : <img
-                    //     src={`https://image.tmdb.org/t/p/w200${props.movie.posterPath}`}
-                    //     alt={props.movie.title}
-                    //     style={{width:50, objectFit:'cover', borderRadius:5}}
-                    // />
-                    : <MovieTile movie={props.movie} navigateToMoviePage={navigateToMoviePage} returnHue={(newHue)=>setHue(newHue)}/>
-
-                }
+            <div style={{width:50, height:75}}>
+                <div className="placeholderGradientAnimation" style={{width:50, aspectRatio:'2/3', borderRadius:5, backgroundColor:hue.defaults.textSmall, opacity:0.2}}/>
                 
             </div>
-            <div style={{color:isHovering ? hue.defaults.textSmall : 'black'}}>
-                <p style={{fontWeight:600, fontSize:18}}>{props.movie.title}</p>
-
-                <p>{props.movie.year} | {props.movie.genres.map((genre)=>genre.name).join(" / ")}</p>
+            <div style={{color:isHovering ? hue.defaults.textSmall : 'black', display:'flex', flexDirection:'column', gap:5}}>
+                {/* <p style={{fontWeight:600, fontSize:18}}>movie title</p> */}
+                <div className="placeholderGradientAnimation" style={{backgroundColor:hue.defaults.textSmall, opacity:0.2,width:titleWidth, height:18, borderRadius:5}}/>
+                <div className="placeholderGradientAnimation" style={{backgroundColor:hue.defaults.textSmall, opacity:0.2,width:detailsWidth, height:18, borderRadius:5}}/>
+                {/* <p>1998 | genres</p> */}
             </div>
         </div>
     )

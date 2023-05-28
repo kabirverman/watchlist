@@ -265,7 +265,7 @@ export default function WatchlistPage() {
                     { windowSize.width <= 500 &&
                         <div style={{display:'flex', flexDirection:'column', gap:15}}>
                             {showCategoryButtons()}
-                            <MovieTileContainer movies={sortedMovies[displayCategory]} isSingleRow={false} tilesPerRow={3} />
+                            <MovieTileContainer movies={sortedMovies[displayCategory]} numberOfRows={0} tilesPerRow={3} />
                         </div>
 
                     }
@@ -277,7 +277,7 @@ export default function WatchlistPage() {
                             </div>
                         } */}
                         { windowSize.width > 500 &&
-                            <MovieTileContainer movies={sortedMovies[displayCategory]} isSingleRow={false} tilesPerRow={6} manipulateMovieInWatchlist={{toggleMovieWatchState,removeMovieFromWatchlist}}/>
+                            <MovieTileContainer movies={sortedMovies[displayCategory]} numberOfRows={0} tilesPerRow={6} manipulateMovieInWatchlist={{toggleMovieWatchState,removeMovieFromWatchlist}}/>
                         }
 					</div>
 				</div>
