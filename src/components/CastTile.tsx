@@ -3,7 +3,8 @@ import { ICast, IHue } from "../Interfaces"
 
 export interface ICastTileProps {
     castMember:ICast|undefined,
-    hue:IHue
+    hue:IHue,
+    showData: boolean
 }
 
 export default function CastTile(props:ICastTileProps) {
@@ -12,7 +13,7 @@ export default function CastTile(props:ICastTileProps) {
     const [isImageLoaded, setIsImageLoaded] = useState(false)
 
     function showImage() {
-        if (props.castMember === undefined) {
+        if (props.castMember === undefined || !props.showData) {
             return (
                 <div className="placeholderGradientAnimation" style={{position:'absolute', backgroundColor:props.hue.defaults.textSmall, opacity:0.2, borderRadius:'10px 0px 0px 10px', top:0, bottom:0, display:'flex', width:66,alignItems:'center', justifyContent:'center'}}/>
             )
@@ -60,9 +61,9 @@ export default function CastTile(props:ICastTileProps) {
                 
             </div>
             <div style={{padding:10, color:props.hue.defaults.textSmall}}>
-                {props.castMember === undefined ? <p className="placeholderGradientAnimation" style={{backgroundColor:props.hue.defaults.textSmall, opacity:0.2, color:'transparent', borderRadius:8, width:'fit-content'}}>writer names</p> : <p style={{fontWeight:600}}>{props.castMember.name}</p>}
+                {props.castMember === undefined || !props.showData ? <p className="placeholderGradientAnimation" style={{backgroundColor:props.hue.defaults.textSmall, opacity:0.2, color:'transparent', borderRadius:8, width:'fit-content'}}>writer names</p> : <p style={{fontWeight:600}}>{props.castMember.name}</p>}
                 {/* <p style={{fontWeight:600}}>{props.castMember.name}</p> */}
-                {props.castMember === undefined ? <p className="placeholderGradientAnimation" style={{backgroundColor:props.hue.defaults.textSmall, opacity:0.2, color:'transparent', borderRadius:8, width:'fit-content', marginTop:5}}>writer names go here</p> : <p>as {props.castMember.character}</p>}
+                {props.castMember === undefined || !props.showData ? <p className="placeholderGradientAnimation" style={{backgroundColor:props.hue.defaults.textSmall, opacity:0.2, color:'transparent', borderRadius:8, width:'fit-content', marginTop:5}}>writer names go here</p> : <p>as {props.castMember.character}</p>}
                 {/* <p>as {props.castMember.character}</p> */}
             </div>
         </div>

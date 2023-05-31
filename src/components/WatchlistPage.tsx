@@ -284,7 +284,7 @@ export default function WatchlistPage() {
                     { windowSize.width <= 500 &&
                         <div style={{display:'flex', flexDirection:'column', gap:15}}>
                             {showCategoryButtons()}
-                            <MovieTileContainer movies={sortedMovies[displayCategory]} numberOfRows={0} tilesPerRow={3} />
+                            <MovieTileContainer movies={sortedMovies[displayCategory]} numberOfRows={0} tilesPerRow={3} manipulateMovieInWatchlist={{toggleMovieWatchState,removeMovieFromWatchlist}} />
                         </div>
 
                     }

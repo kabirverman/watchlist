@@ -1,4 +1,4 @@
-import { useContext, useState } from "react"
+import { useContext, useRef, useState } from "react"
 import { IHue, IWatchlist } from "../Interfaces"
 import { getAllWatchlistEmojis, getEmoji } from "../utils/emoji"
 import { getAllHues, getRandomHue } from "../utils/hues"
@@ -14,13 +14,16 @@ export default function WatchlistAddTile(props:IWatchlistAddTileProps) {
 
     const providerState = useContext(Context)
     const [isCreatingNewWatchlist, setIsCreatingNewWatchlist] = useState(false)
-    const [watchlistEmoji, setWatchlistEmoji] = useState(getEmoji("🤠"))
+    const randomEmoji = getAllWatchlistEmojis()[Math.floor(Math.random() * getAllWatchlistEmojis().length)]
+    const [watchlistEmoji, setWatchlistEmoji] = useState(randomEmoji)
     const [watchlistName, setWatchlistName] = useState("")
     const [watchlistHue, setWatchlistHue] = useState<IHue>(getRandomHue())
     const editPanelOptions = ["emoji","color"] as const
     const [editPanelMode, setEditPanelMode] = useState<typeof editPanelOptions[number]>("emoji")
     const [editPanelTransform, setEditPanelTransform] = useState(`translate(0px, 0px)`)
     const [buttonsTransform, setButtonsTransform] = useState(`translate(0px, calc(-100% - 10px))`)
+    const textAreaRef = useRef<HTMLTextAreaElement>(null)
+    const [isTextAreaFocused, setIsTextAreaFocused] = useState(false)
     let wandEmoji = getEmoji("🪄")
     const tempTransition = 'transform 300ms cubic-bezier(0.18, 0.14, 0.18, 0.99)'
 
@@ -44,10 +47,12 @@ export default function WatchlistAddTile(props:IWatchlistAddTileProps) {
                         style={{filter:'grayscale(1)'}}
                     /> */}
                     {/* <p className="watchlistTile-text" style={{color:'#747474'}}>create a swag</p> */}
+                    {watchlistName.length > 0 && <p style={{position:'absolute', right:0, bottom:0, margin:10, color:'rgb(184, 184, 184)'}}>{watchlistName.length}/40</p>}
                     <textarea
+                        ref={textAreaRef}
                         className="watchlistAddTile-textarea"
                         style={{
-                            backgroundColor:'rgba(255,255,255,0.5)',
+                            backgroundColor:isTextAreaFocused && watchlistName.length > 0 ? 'transparent' : 'rgba(255,255,255,0.5)',
                             color:watchlistHue.defaults.textSmall,
                             fontSize:20,
                             fontWeight:500,
@@ -55,9 +60,13 @@ export default function WatchlistAddTile(props:IWatchlistAddTileProps) {
                             border:'none',
                             resize:'none',
                             borderRadius:10,
-                            width:'100%'
+                            width:'100%',
+                            transition:'background-color 300ms cubic-bezier(0.48, 0.46, 0.41, 0.99)'
                             
                         }}
+                        onFocus={()=>setIsTextAreaFocused(true)}
+                        onBlur={()=>setIsTextAreaFocused(false)}
+                        maxLength={40}
                         placeholder="enter a watchlist title"
                         value={watchlistName}
                         onChange={(e)=>setWatchlistName(e.target.value)}
@@ -76,6 +85,12 @@ export default function WatchlistAddTile(props:IWatchlistAddTileProps) {
                     setIsCreatingNewWatchlist(true)
                     setEditPanelTransform(`translate(0px, calc(-100% - 10px))`)
                     setButtonsTransform(`translate(0px, 0px)`)
+                    setWatchlistEmoji(randomEmoji)
+                    setWatchlistHue(getRandomHue())
+                    setTimeout(()=> {
+
+                        textAreaRef.current?.focus()
+                    },100)
                 }}
             >
                 <img 
@@ -140,7 +155,7 @@ export default function WatchlistAddTile(props:IWatchlistAddTileProps) {
                                     className="watchlistTile-emoji"
                                     src={require(`../${emoji.path}`)}
                                     alt={emoji.name}
-                                    style={{width:23, height:23, transform:'scale(1.1', cursor:'pointer'}}
+                                    style={{width:25, height:25, transform:'scale(1.1', cursor:'pointer'}}
                                     onClick={()=>setWatchlistEmoji(emoji)}
                                 />
                             )
@@ -150,8 +165,8 @@ export default function WatchlistAddTile(props:IWatchlistAddTileProps) {
                                 <div
                                     key={hue.hue}
                                     style={{
-                                        width:23,
-                                        height:23,
+                                        width:25,
+                                        height:25,
                                         // backgroundColor:hue.defaults.textLarge,
                                         backgroundColor:`hsl(${hue.hue}, 80%, 50%)`,
                                         borderRadius:20,

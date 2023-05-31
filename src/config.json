@@ -241,16 +241,6 @@
             }
         },
         {
-            "hue": 265,
-            "name": "purple",
-            "defaults" : {
-                "panel":"hsl(265, 100%, 95%)",
-                "border":"hsl(265, 50%, 80%)",
-                "textLarge":"hsl(265, 55%, 52%)",
-                "textSmall":"hsl(265, 60%, 42%)"
-            }
-        },
-        {
             "hue": 300,
             "name": "pink",
             "defaults" : {

@@ -16,7 +16,8 @@ interface IMovieTileProps {
     manipulateMovieInWatchlist?: {
         toggleMovieWatchState: (movie: IMovie) => void;
         removeMovieFromWatchlist: (movie: IMovie) => void;
-    } | undefined
+    } | undefined,
+    isMobile?:boolean,
 }
 
 
@@ -25,6 +26,7 @@ export default function MovieTile(props:IMovieTileProps) {
     const providerState = useContext(Context)
 
     const [isImageFound, setIsImageFound] = useState(true)
+    const [isImageLoaded, setIsImageLoaded] = useState(false)
     const [hue, setHue] = useState(getRandomHue())
     const imageRef = useRef<HTMLImageElement>(null)
 
@@ -66,18 +68,68 @@ export default function MovieTile(props:IMovieTileProps) {
     }
 
 
+    function showDropdownMenu() {
+        if (!props.manipulateMovieInWatchlist || !props.isMobile) return
+        const crossMarkEmoji = getEmoji("❌")
+        const eyeEmoji = getEmoji("👁️")
+
+        return (
+            <>
+                <div style={{position:'absolute', right:0, zIndex:1, marginTop:10, marginRight:5, cursor:'pointer', filter:showDropdown? '' : 'drop-shadow(0px 0px 2px black) drop-shadow(0px 0px 10px black)'}} onClick={()=>setShowDropdown(prev => !prev)}>
+                    <svg style={{color:showDropdown? hue.defaults.textSmall : 'white', transform:'rotate(90deg) scale(1.25)'}} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                        <circle cx="5.5" cy="12" r="1.5" fill="currentColor"/>
+                        <circle cx="18.5" cy="12" r="1.5" fill="currentColor"/>
+                        <circle cx="12" cy="12" r="1.5" fill="currentColor"/>
+                    </svg>
+                </div>
+
+                <div style={{position:'absolute', backgroundColor:hue.defaults.panel, width:'100%', borderRadius:10, color:hue.defaults.textSmall, transform:`translate(0px, ${dropdownTranslate}%)`, transition:'transform 150ms ease-out'}}>
+                    <div style={{padding:'45px 0px 0px 0px', display:'flex', flexDirection:'column'}}>
+                        <div
+                            style={{padding:'10px 10px 10px 10px', display:'flex', alignItems:'center', gap:5, backgroundColor:'rgba(0,0,0,0.05)'}}
+                            onClick={() => {
+                                props.manipulateMovieInWatchlist?.toggleMovieWatchState(props.movie!)
+                                setShowDropdown(false)
+                            }}
+                        >
+                            <img src={require(`../${eyeEmoji.path}`)} alt={eyeEmoji.name} style={{width:20, height:20}} />
+                            <p>watched</p>
+                        </div>
+
+                        <div
+                            style={{padding:'10px 10px 10px 10px', display:'flex', alignItems:'center', gap:5}}
+                            onClick={() => {
+                                props.manipulateMovieInWatchlist?.removeMovieFromWatchlist(props.movie!)
+                                setShowDropdown(false)
+                            }}
+                        >
+                            <img src={require(`../${crossMarkEmoji.path}`)} alt={crossMarkEmoji.name} style={{width:20, height:20}} />
+                            <p>remove</p>
+                        </div>
+                    </div>
+                </div>
+            </>
+        )
+    }
+
+
     function showImage() {
+        // if (props.movie === undefined) {
+        //     return (
+        //         <div className="placeholderGradientAnimation" style={{backgroundColor:providerState.hue.defaults.textSmall, opacity:0.1, borderRadius:10, width:'100%', aspectRatio:'2/3'}}/>
+        //     )
+        // }
+
         if (props.movie === undefined) {
-            return (
-                <div className="placeholderGradientAnimation" style={{backgroundColor:providerState.hue.defaults.textSmall, opacity:0.1, borderRadius:10, width:'100%', aspectRatio:'2/3'}}/>
-            )
+            return <div className="moviePage-poster-image placeholderGradientAnimation" style={{aspectRatio:'2/3', height:'100%', backgroundColor:providerState.hue.defaults.textSmall, opacity:0.2}}/>
         }
+
 
         if (isImageFound) {
             return (
-                <div style={{position:'relative', borderRadius:10, overflow:'hidden',boxShadow:`0px 0px 0px 1px ${hue.defaults.border}`}} onMouseOver={()=>setIsHovering(true)} onMouseOut={()=>setIsHovering(false)}>
+                <div style={{position:'relative', borderRadius:10, aspectRatio:'2/3', overflow:'hidden',boxShadow:`0px 0px 0px 1px ${hue.defaults.border}`}} onMouseOver={()=>setIsHovering(true)} onMouseOut={()=>setIsHovering(false)}>
                     {/* {
-                        ((isOnWatchlist && isHovering) || (showDropdown)) &&
+                        ((props.manipulateMovieInWatchlist && props.isMobile) || (showDropdown)) &&
                         <div style={{position:'absolute', right:0, zIndex:1, marginTop:10, marginRight:5, cursor:'pointer', filter:showDropdown? '' : 'drop-shadow(0px 0px 2px black) drop-shadow(0px 0px 10px black)'}} onClick={()=>setShowDropdown(prev => !prev)}>
                             <svg style={{color:showDropdown? hue.defaults.textSmall : 'white', transform:'rotate(90deg) scale(1.25)'}} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
                                 <circle cx="5.5" cy="12" r="1.5" fill="currentColor"/>
@@ -87,64 +139,52 @@ export default function MovieTile(props:IMovieTileProps) {
                         </div>
                     } */}
 
-                    { showWatchlistButtons() }
+                    {   props.isMobile 
+                        ? showDropdownMenu()
+                        : showWatchlistButtons()
+
+                    }
+                    {/* { showWatchlistButtons() }
+
+                    { showDropdownMenu() } */}
 
                     
-                        
-                    {/* <div style={{position:'absolute', backgroundColor:hue.defaults.panel, width:'100%', borderRadius:10, color:hue.defaults.textSmall, transform:`translate(0px, ${dropdownTranslate}%)`, transition:'transform 150ms ease-out'}}>
-                        <div style={{padding:'45px 0px 0px 0px', display:'flex', flexDirection:'column'}}>
-                            <div
-                                style={{padding:'5px 15px 5px 15px', display:'flex', alignItems:'center', gap:5, backgroundColor:'rgba(0,0,0,0.05)'}}
-                                onClick={() => {
-                                    props.manipulateMovieInWatchlist?.toggleMovieWatchState(props.movie!)
-                                    setShowDropdown(false)
-                                }}
-                            >
-                                <img src={require(`../${gearEmoji.path}`)} alt={gearEmoji.name} style={{width:20, height:20}} />
-                                <p>watched</p>
-                            </div>
+                    {/* { props.manipulateMovieInWatchlist && props.isMobile &&
+                        <div style={{position:'absolute', backgroundColor:hue.defaults.panel, width:'100%', borderRadius:10, color:hue.defaults.textSmall, transform:`translate(0px, ${dropdownTranslate}%)`, transition:'transform 150ms ease-out'}}>
+                            <div style={{padding:'45px 0px 0px 0px', display:'flex', flexDirection:'column'}}>
+                                <div
+                                    style={{padding:'5px 15px 5px 15px', display:'flex', alignItems:'center', gap:5, backgroundColor:'rgba(0,0,0,0.05)'}}
+                                    onClick={() => {
+                                        props.manipulateMovieInWatchlist?.toggleMovieWatchState(props.movie!)
+                                        setShowDropdown(false)
+                                    }}
+                                >
+                                    <img src={require(`../${gearEmoji.path}`)} alt={gearEmoji.name} style={{width:20, height:20}} />
+                                    <p>watched</p>
+                                </div>
 
-                            <div
-                                style={{padding:'5px 15px 5px 15px', display:'flex', alignItems:'center', gap:5}}
-                                onClick={() => {
-                                    props.manipulateMovieInWatchlist?.removeMovieFromWatchlist(props.movie!)
-                                    setShowDropdown(false)
-                                }}
-                            >
-                                <img src={require(`../${gearEmoji.path}`)} alt={gearEmoji.name} style={{width:20, height:20}} />
-                                <p>remove</p>
+                                <div
+                                    style={{padding:'5px 15px 5px 15px', display:'flex', alignItems:'center', gap:5}}
+                                    onClick={() => {
+                                        props.manipulateMovieInWatchlist?.removeMovieFromWatchlist(props.movie!)
+                                        setShowDropdown(false)
+                                    }}
+                                >
+                                    <img src={require(`../${gearEmoji.path}`)} alt={gearEmoji.name} style={{width:20, height:20}} />
+                                    <p>remove</p>
+                                </div>
                             </div>
                         </div>
-                    </div> */}
+                    } */}
 
 
                     {/* <div style={{position:'absolute'}}> */}
                         
-                        <div
-                            style={{position:'absolute',padding:5, display:'flex', alignItems:'center', gap:5, right:0, transform:showDropdown? 'translate(-200%, 75%)': 'translate(150%, 25%)', backgroundColor:'red', borderRadius:20,transition:'transform 300ms cubic-bezier(0.09, 0.29, 0.2, 1)'}}
-                            onClick={() => {
-                                props.manipulateMovieInWatchlist?.toggleMovieWatchState(props.movie!)
-                                setShowDropdown(false)
-                            }}
-                        >
-                            <img src={require(`../${gearEmoji.path}`)} alt={gearEmoji.name} style={{width:30, height:30}} />
-                            {/* <p>watched</p> */}
-                        </div>
-
-                        <div
-                            style={{position:'absolute', padding:5, display:'flex', alignItems:'center', gap:5, right:0, transform:showDropdown?'translate(-75%, 200%)':'translate(150%, 75%)', backgroundColor:'blue', borderRadius:20,transition:'transform 300ms cubic-bezier(0.09, 0.29, 0.2, 1) 100ms'}}
-                            onClick={() => {
-                                props.manipulateMovieInWatchlist?.removeMovieFromWatchlist(props.movie!)
-                                setShowDropdown(false)
-                            }}
-                        >
-                            <img src={require(`../${gearEmoji.path}`)} alt={gearEmoji.name} style={{width:30, height:30}} />
-                            {/* <p>remove</p> */}
-                        </div>
+                        
                         
                     {/* </div> */}
                     
-
+                    <div style={{pointerEvents:'none', position:'absolute', width:'100%', height:'100%', borderRadius:'10px 10px 0px 0px',backgroundColor:providerState.hue.defaults.textSmall, opacity:isImageLoaded? 0 : 0.2,transition:`opacity ${500 + Math.random()*1000}ms`}} />
                     <img
                         ref={imageRef}
                         crossOrigin="anonymous"
@@ -168,6 +208,7 @@ export default function MovieTile(props:IMovieTileProps) {
                             if (props.returnHue) {
                                 props.returnHue(grabbedHue)
                             }
+                            setIsImageLoaded(true)
                         }}
                     />
                 </div>

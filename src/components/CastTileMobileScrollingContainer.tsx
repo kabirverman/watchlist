@@ -3,7 +3,8 @@ import CastTileMobile from "./CastTileMobile"
 
 interface ICastTileMobileScrollingContainerProps {
     cast:ICast[]|undefined,
-    hue:IHue
+    hue:IHue,
+    showData: boolean
 }
 
 export default function CastTileMobileScrollingContainer(props:ICastTileMobileScrollingContainerProps) {
@@ -17,7 +18,7 @@ export default function CastTileMobileScrollingContainer(props:ICastTileMobileSc
                 {castArray.map((castMember, index) => {
                     return (
                         // <div key={index} style={{flex:'0 0 auto', width:'40%'}}>
-                            <CastTileMobile key={index} castMember={castMember} hue={props.hue}/>
+                            <CastTileMobile key={index} castMember={castMember} hue={props.hue} showData={props.showData}/>
                             // {/* <p style={{fontWeight:600}}>{castMember.name}</p>
                             // <p>as {castMember.character}</p> */}
                         // </div>

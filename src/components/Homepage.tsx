@@ -85,10 +85,9 @@ function WatchlistTileContainer(props:IWatchlistTileContainerProps) {
 
     let filledTileCount = providerState.watchlists.length + 1
     let blankTileCount = props.tilesPerRow - (filledTileCount % props.tilesPerRow)
-    console.log(props.tilesPerRow - (filledTileCount % props.tilesPerRow))
-    console.log(props.tilesPerRow - (filledTileCount % props.tilesPerRow-1))
-    if (blankTileCount === filledTileCount && filledTileCount >= props.tilesPerRow) blankTileCount = 0
+    if (blankTileCount === props.tilesPerRow) blankTileCount = 0
     let blankTiles = new Array(blankTileCount).fill(" ")
+
 
     let wandEmoji = getEmoji("🪄")
 

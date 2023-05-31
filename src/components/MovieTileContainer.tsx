@@ -48,7 +48,7 @@ export default function MovieTileContainer(props:IMovieTileContainerProps) {
     return (
         <div className="movieTileContainer-container" style={{gridTemplateColumns:`repeat(${tilesPerRow}, minmax(0,1fr))`}}>
             {movies.map((movie, index) => {
-                return <MovieTile key={index} movie={movie} manipulateMovieInWatchlist={props.manipulateMovieInWatchlist}/>
+                return <MovieTile key={index} movie={movie} manipulateMovieInWatchlist={props.manipulateMovieInWatchlist} isMobile={windowSize.width < 500}/>
             })}
 
             {blankTiles.map((blankTile, index) => {

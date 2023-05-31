@@ -1,7 +1,7 @@
 import { IEmoji } from "../Interfaces"
 import config from "../config.json"
 
-const watchlistEmojiKeys = ["😀","🤣","😘","😭","😳","🤪","🤢","🤓","👽"]
+const watchlistEmojiKeys = ["😀","🤣","😘","😭","🤪","🤢","🤓","👽"]
 
 
 export function getAllEmojis() {

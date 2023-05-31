@@ -7,14 +7,18 @@ import MovieTile from "./MovieTile"
 
 interface ISearchBarItemProps {
     movie:IMovie,
-    setIsFocusingSearch: React.Dispatch<React.SetStateAction<boolean>>
+    setIsFocusingSearch: React.Dispatch<React.SetStateAction<boolean>>,
+    setIsSearchBarHeader?: React.Dispatch<React.SetStateAction<boolean>>
 }
 
 export default function SearchBarItem(props:ISearchBarItemProps) {
 
     const [navigateToMoviePage, setNavigateToMoviePage] = useState(false)
+    const providerState = useContext(Context)
     const [hue, setHue] = useState<IHue>(getRandomHue())
     const [isHovering, setIsHovering] = useState(false)
+    const navigate = useNavigate()
+
 
 
     
@@ -24,6 +28,9 @@ export default function SearchBarItem(props:ISearchBarItemProps) {
             onClick={()=>{
                 setNavigateToMoviePage(true)
                 props.setIsFocusingSearch(false)
+                navigate(`/movie/${props.movie.movieId}`)
+                providerState.updateHue(hue)
+                if (props.setIsSearchBarHeader) props.setIsSearchBarHeader(false)
             }}
             onMouseOver={()=>setIsHovering(true)}
             onMouseOut={()=>setIsHovering(false)}
@@ -31,7 +38,7 @@ export default function SearchBarItem(props:ISearchBarItemProps) {
             <div style={{width:50, height:75, flexShrink:0}}>
                 {   props.movie.posterPath === null 
 
-                    ? <div style={{width:50, aspectRatio:'2/3', borderRadius:5, backgroundColor:'red'}}/>
+                    ? <div style={{width:50, aspectRatio:'2/3', borderRadius:5, backgroundColor:hue.defaults.textSmall, opacity:0.2}}/>
                     // : <img
                     //     src={`https://image.tmdb.org/t/p/w200${props.movie.posterPath}`}
                     //     alt={props.movie.title}

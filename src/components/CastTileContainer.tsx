@@ -5,7 +5,8 @@ import CastTile from "./CastTile"
 
 interface ICastTileContainerProps {
     cast:ICast[]|undefined,
-    hue:IHue
+    hue:IHue,
+    showData: boolean
 }
 
 export default function CastTileContainer(props: ICastTileContainerProps) {
@@ -49,21 +50,28 @@ export default function CastTileContainer(props: ICastTileContainerProps) {
     let canGoNext = castPage < Math.ceil((props.cast?.length??0)/numberToShow)
     let canGoPrev = castPage > 1
 
+
+    function showCastTiles() {
+        if (props.cast === undefined) return
+
+        return props.cast.slice(numberToShow*castPage - numberToShow ,numberToShow*castPage).map((castMember, index) => {
+            return <CastTile key={castMember?.name??index} castMember={castMember} hue={props.hue} showData={props.showData}/>  
+        })
+    }
+
+    function showBlankTiles() {
+        return blankTileCount > 0 && Array(blankTileCount).fill(undefined).map((item) => {
+            return <div style={{backgroundColor:'#f7f7f7', minHeight:103, borderRadius:10}}/>
+        })
+    }
+
     return (
         <div>
             <div style={{display:'grid', gridTemplateColumns:windowSize.width > 1000 ? '1fr 1fr 1fr' : '1fr 1fr', gap:10}}>
 
-                {/* {castArray.map((castMember, index) => {
-                    return <CastTile key={castMember?.name??index} castMember={castMember} hue={props.hue}/>  
-                })} */}
-                {props.cast !== undefined && props.cast.slice(numberToShow*castPage - numberToShow ,numberToShow*castPage).map((castMember, index) => {
-                    return <CastTile key={castMember?.name??index} castMember={castMember} hue={props.hue}/>  
-                })}
+                { showCastTiles() }
 
-                { blankTileCount > 0 && Array(blankTileCount).fill(undefined).map((item) => {
-                        return <div style={{backgroundColor:'#f7f7f7', minHeight:103, borderRadius:10}}/>
-                    })
-                }
+                { showBlankTiles() }
 
             </div>
 

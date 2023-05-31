@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query"
-import { useEffect, useRef, useState } from "react"
+import { useEffect, useLayoutEffect, useRef, useState } from "react"
 import { fetchMovieSearch } from "../fetch"
 import { useDebounce } from "../hooks/useDebounce"
 import { IHue, IMovie } from "../Interfaces"
@@ -7,7 +7,9 @@ import SearchBarItem from "./SearchBarItem"
 import SearchBarItemPlaceholder from "./SearchBarItemPlaceholder"
 
 interface ISearchBarProps {
-    hue:IHue
+    hue:IHue,
+    isMobile: boolean,
+    setIsSearchBarHeader?: React.Dispatch<React.SetStateAction<boolean>>
 }
 
 export default function SearchBar(props:ISearchBarProps) {
@@ -18,13 +20,20 @@ export default function SearchBar(props:ISearchBarProps) {
     const placeholderText = "search for a movie"
     const searchInputRef = useRef<HTMLInputElement>(null)
     const debouncedSearch = useDebounce(search, 1000)
-    const maxResults = 5
+    const maxResults = props.isMobile ? 3 : 5
     const {data, isLoading}  = useQuery({ queryKey: ["movieSearch",debouncedSearch], queryFn:()=>fetchMovieSearch(debouncedSearch), enabled:Boolean(debouncedSearch),refetchOnWindowFocus: false}) 
     const [hideSearchResults, setHideSearchResults] = useState<boolean>(false)
     const [imageLoadStatusArray, setImageLoadStatusArray] = useState<boolean[]>([])
     const [areAllImagesLoaded, setAreAllImagesLoaded] = useState<boolean>(false)
 
 
+    useLayoutEffect(()=> {
+        if (props.isMobile) {
+
+            console.log('should focus')
+            searchInputRef.current?.focus()
+        }
+    },[props.isMobile])
 
     useEffect(()=> {
         if (data === undefined) return
@@ -32,7 +41,7 @@ export default function SearchBar(props:ISearchBarProps) {
     },[data])
 
     useEffect(()=> {
-        if (!isFocusingSearch) {
+        if (!isFocusingSearch && !props.isMobile) {
             searchInputRef.current?.blur()
         }
     },[isFocusingSearch])
@@ -61,7 +70,7 @@ export default function SearchBar(props:ISearchBarProps) {
             <div style={{visibility:shouldShow ? 'visible': 'hidden', position:shouldShow ? 'initial' : 'absolute'}}>
                 {data?.slice(0,maxResults).map((movie:IMovie, index:number)=> {
                     return (
-                        <SearchBarItem key={movie.movieId} movie={movie} setIsFocusingSearch={setIsFocusingSearch}/>
+                        <SearchBarItem key={movie.movieId} movie={movie} setIsFocusingSearch={setIsFocusingSearch} setIsSearchBarHeader={props.setIsSearchBarHeader}/>
                         // <div>
                         //     <p>{movie.title}</p>
                         // </div>
@@ -77,7 +86,12 @@ export default function SearchBar(props:ISearchBarProps) {
     }
 
 
-
+    function returnInputValue() {
+        if (props.isMobile) return search
+        if (isFocusingSearch || search!== "") return search
+        
+        return placeholderText
+    }
 
 
     return (
@@ -86,7 +100,8 @@ export default function SearchBar(props:ISearchBarProps) {
             tabIndex={1}
             onBlur={(e)=>{
                 if (!e.currentTarget.contains(e.relatedTarget)) {
-                    setIsFocusingSearch(false)
+                    // TODO: re enable
+                    // setIsFocusingSearch(false)
                 }
             }}
             onFocus={()=> {
@@ -96,7 +111,7 @@ export default function SearchBar(props:ISearchBarProps) {
             }}
 
         >
-            <div className="searchBar" style={{boxShadow:`0px 0px 2px 0px hsl(${props.hue.hue}, 50%, 40%)`, width:'100%', height:'100%', borderRadius:10, display:'flex', padding:10, boxSizing:'border-box', position:'relative'}}>
+            <div className="searchBar" style={{boxShadow:props.isMobile ? '' : `0px 0px 2px 0px hsl(${props.hue.hue}, 50%, 40%)`, width:'100%', height:'100%', borderRadius:10, display:'flex', padding:props.isMobile ? '10px 15px' : 10, boxSizing:'border-box', position:'relative', alignItems:'center'}}>
                 <input
                     style={{border:'none',backgroundColor:'transparent',color:isFocusingSearch? props.hue.defaults.textLarge : `hsl(${props.hue.hue}, 30%, 70%)`, width:'100%', fontSize:'18px'}}
                     ref={searchInputRef}
@@ -109,14 +124,25 @@ export default function SearchBar(props:ISearchBarProps) {
                             setIsWaitingForDebounce(false)
                         }
                     }}
-                    value={isFocusingSearch || search!== "" ? search : placeholderText}
+                    placeholder={props.isMobile ? placeholderText : ''}
+                    value={returnInputValue()}
                 />
-                <div className="searchBar-icon">
-                    <svg style={{stroke:`hsl(${props.hue.hue}, 30%, 70%)`}} width="24" height="24" viewBox="0 2 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <circle cx="11" cy="11" r="5" strokeWidth="1.5" />
-                        <path d="M19.5 19.5L16.5 15.5L15.5 16.5L19.5 19.5Z" strokeWidth="1" />
+
+                {  props.isMobile
+                 
+                    ? <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="none">
+                        <path style={{stroke:props.hue.defaults.textLarge, strokeWidth:2, strokeLinecap:'round', strokeLinejoin:'round'}} d="M17 7L7 17M7 7L17 17"/>
                     </svg>
-                </div>
+
+                    : <div className="searchBar-icon">
+                        <svg style={{stroke:`hsl(${props.hue.hue}, 30%, 70%)`}} width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="11" cy="11" r="5" strokeWidth="1.5" />
+                            <path d="M19.5 19.5L16.5 15.5L15.5 16.5L19.5 19.5Z" strokeWidth="1" />
+                        </svg>
+                    </div>
+
+                    
+                }
                 
             </div>
             <div className="searchBar-results-container">
