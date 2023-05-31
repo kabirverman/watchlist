@@ -8,7 +8,7 @@ interface IMovieTileContainerProps {
     movies:IMovie[] | undefined,
     // isSingleRow:boolean,
     numberOfRows:number,
-    tilesPerRow:number,
+    // tilesPerRow:number,
     manipulateMovieInWatchlist?: {
         toggleMovieWatchState: (movie: IMovie) => void;
         removeMovieFromWatchlist: (movie: IMovie) => void;
@@ -21,19 +21,22 @@ export default function MovieTileContainer(props:IMovieTileContainerProps) {
     let watchlists = new Array(2).fill(" ")
 
     // let filledTileCount = props.movies.length + 1
-    let movies = props.movies === undefined ? new Array(props.tilesPerRow).fill(undefined) : props.movies
+    const windowSize = useWindowSize()
+    let tilesPerRow = calculateMovieTilesPerRow(windowSize)
+    let movies = props.movies === undefined ? new Array(tilesPerRow).fill(undefined) : props.movies
+    if (props.numberOfRows !== 0) movies = movies.slice(0, props.numberOfRows*tilesPerRow)
     console.log(movies)
-    let blankTileCount = props.tilesPerRow - (movies.length % props.tilesPerRow)
-    if (blankTileCount === props.tilesPerRow && movies.length >= props.tilesPerRow) blankTileCount = 0
+    let blankTileCount = tilesPerRow - (movies.length % tilesPerRow)
+    if (blankTileCount === tilesPerRow && movies.length >= tilesPerRow) blankTileCount = 0
     let blankTiles = new Array(blankTileCount).fill(" ")
 
-    const windowSize = useWindowSize()
+    console.log(blankTileCount, tilesPerRow)
+
     
-    let tilesPerRow = calculateMovieTilesPerRow(windowSize)
     // const [tilesPerRow, setTilesPerRow] = useState(calculateMovieTilesPerRow(windowSize))
     // let movies = props.movies
     // if (props.isSingleRow) movies = movies.slice(0, tilesPerRow)
-    if (props.numberOfRows !== 0) movies = movies.slice(0, props.numberOfRows*tilesPerRow)
+    
 
     function calculateMovieTilesPerRow(windowSize:IWindowSize) {
         let tilesPerRow = 6

@@ -119,7 +119,7 @@ export default function WatchlistEditModal(props:IWatchlistEditModalProps) {
     }
 
     return (
-        <div ref={modalRef} style={{backgroundColor:'white', borderRadius:10, margin:15, boxShadow:'0px 0px 15px rgba(0,0,0,0.25)'}}>
+        <div ref={modalRef} style={{backgroundColor:'white', borderRadius:10, margin:15, boxShadow:'0px 0px 15px rgba(0,0,0,0.25)', width:props.customWidth==='100%' ? '100%' : ''}}>
             <div style={{padding:20, display:'flex', flexDirection:'column', gap:20, width:props.customWidth ? props.customWidth : 'auto', boxSizing:'border-box'}}>
                 <div className="watchlistEditModal-section">
                     <p className="watchlistEditModal-section-text">name</p>

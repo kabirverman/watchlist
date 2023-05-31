@@ -250,7 +250,7 @@ export default function WatchlistPage() {
                     
                     { shouldShowEditModal &&
                         <div ref={editModalRef} style={{position:'absolute', transform:`translate(-15px,0px`, zIndex:2}}>
-                            <WatchlistEditModal watchlist={watchlistState} closeModal={()=>setShouldShowEditModal(false)}/>
+                            <WatchlistEditModal watchlist={watchlistState} closeModal={()=>setShouldShowEditModal(false)} customWidth={windowSize.width < 500 ? '100%' : '400px'}/>
                         </div>
                     }
                 </div>
@@ -284,7 +284,7 @@ export default function WatchlistPage() {
                     { windowSize.width <= 500 &&
                         <div style={{display:'flex', flexDirection:'column', gap:15}}>
                             {showCategoryButtons()}
-                            <MovieTileContainer movies={sortedMovies[displayCategory]} numberOfRows={0} tilesPerRow={3} manipulateMovieInWatchlist={{toggleMovieWatchState,removeMovieFromWatchlist}} />
+                            <MovieTileContainer movies={sortedMovies[displayCategory]} numberOfRows={0} manipulateMovieInWatchlist={{toggleMovieWatchState,removeMovieFromWatchlist}} />
                         </div>
 
                     }
@@ -296,7 +296,7 @@ export default function WatchlistPage() {
                             </div>
                         } */}
                         { windowSize.width > 500 &&
-                            <MovieTileContainer movies={sortedMovies[displayCategory]} numberOfRows={0} tilesPerRow={6} manipulateMovieInWatchlist={{toggleMovieWatchState,removeMovieFromWatchlist}}/>
+                            <MovieTileContainer movies={sortedMovies[displayCategory]} numberOfRows={0} manipulateMovieInWatchlist={{toggleMovieWatchState,removeMovieFromWatchlist}}/>
                         }
 					</div>
 				</div>

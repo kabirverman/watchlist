@@ -35,14 +35,14 @@ export default function WatchlistAddModal(props:IWatchlistAddModalProps) {
         <>
             <div style={{
                 position:'absolute',
-                right:0,
+                // right:0,
                 top:0,
                 transform:showCreateWatchlistModal ? '' : 'translate(0px, -20px) scale(0.95)',
                 zIndex:showCreateWatchlistModal ? 1 : -1,
                 transition:'transform 500ms cubic-bezier(0.09, 0.26, 0.11, 0.99)',
                 }}
             >
-                <WatchlistEditModal customWidth={windowSize.width <= 500? 'auto' : '400px'} closeModal={()=>setShowCreateWatchlistModal(false)}/>
+                <WatchlistEditModal customWidth={windowSize.width <= 500? '100%' : '400px'} closeModal={()=>setShowCreateWatchlistModal(false)}/>
             </div>
             <div ref={modalRef} className="watchlistAddModal-master" style={{ transform:showCreateWatchlistModal ? 'translate(0px, -20px) scale(0.95)' : '', transition:'transform 500ms cubic-bezier(0.09, 0.26, 0.11, 0.99)'}}>
                 <div style={{padding:20, display:'flex', flexDirection:'column', gap:30, height:400,}}>

@@ -6,8 +6,8 @@ import configJson from "../config.json"
 import { getEmoji } from "../utils/emoji"
 import CastTileContainer from "./CastTileContainer"
 import MovieTileContainer from "./MovieTileContainer"
-import { useContext, useEffect, useState } from "react"
-import { getRandomHue } from "../utils/hues"
+import { useContext, useEffect, useRef, useState } from "react"
+import { getHueFromRGB, getRandomHue } from "../utils/hues"
 import useWindowSize from "../hooks/useWindowSize"
 import CastTileMobile from "./CastTileMobile"
 import MovieTileScrollingContainer from "./MovieTileScrollingContainer"
@@ -15,9 +15,12 @@ import CastTileMobileScrollingContainer from "./CastTileMobileScrollingContainer
 import { Context } from "./MainProvider"
 import AddMovieToWatchlistModal from "./WatchlistAddModal"
 import WatchlistAddModal from "./WatchlistAddModal"
+import ColorThief from "colorthief"
 
 
 export default function MoviePage() {
+
+    const colorThief = new ColorThief();
 
     const config:IConfig = configJson as IConfig
 
@@ -35,6 +38,7 @@ export default function MoviePage() {
     const [modalSize, setModalSize] = useState({width:0, height:0})
     const [isMoviePosterLoaded, setIsMoviePosterLoaded] = useState(false)
     const [showData, setShowData] = useState(!isLoading)
+    const imageRef = useRef<HTMLImageElement>(null)
 
     // const [hue, setHue] = useState<IHue>(providerState.hue)
     const windowSize = useWindowSize()
@@ -146,11 +150,22 @@ export default function MoviePage() {
             <div style={{position:'relative', lineHeight:0,width:'100%', height:'100%', aspectRatio:isMoviePosterLoaded? '0':'2/3'}}>
                 {!showData && <div style={{position:'absolute', width:'100%', height:'100%', borderRadius:'10px 10px 0px 0px',backgroundColor:providerState.hue.defaults.textSmall, opacity:isMoviePosterLoaded? 0 : 0.2,transition:`opacity ${500 + Math.random()*1000}ms`}} />}
                 <img
-                    src={`https://image.tmdb.org/t/p/w${342}${data.posterPath}?dummy=parameter`}
+                    ref={imageRef}
+                    crossOrigin="anonymous"
+                    src={`https://image.tmdb.org/t/p/w${342}${data.posterPath}?parameter=ok`}
                     alt={data.title}
                     className="moviePage-poster-image"
                     style={{width:'calc(100% - 2px)', marginLeft:1, opacity:isMoviePosterLoaded ? 1 : 0, transition:`opacity ${500 + Math.random()*1000}ms`}}
-                    onLoad={()=>setIsMoviePosterLoaded(true)}
+                    onLoad={()=> {
+                        setIsMoviePosterLoaded(true)
+                        let rgb = colorThief.getColor(imageRef.current, 10)
+                        let grabbedHue = getHueFromRGB(rgb[0], rgb[1], rgb[2])
+                        providerState.updateHue(grabbedHue)
+                        // setHue(grabbedHue)
+                        // if (props.returnHue) {
+                        //     props.returnHue(grabbedHue)
+                        // }
+                    }}
                 />
             </div>
         )
@@ -279,7 +294,7 @@ export default function MoviePage() {
                 { windowSize.width > 500 &&
                     <div style={{display:'flex', flexDirection:'column', gap:20}}>
                         <b style={{fontSize:20}}>similar movies</b>
-                        <MovieTileContainer movies={data ? data.similarMovies.slice(0,6) : undefined} numberOfRows={1} tilesPerRow={6}/>
+                        <MovieTileContainer movies={data ? data.similarMovies.slice(0,6) : undefined} numberOfRows={1}/>
                         {/* <MovieTileContainer movies={undefined} isSingleRow={true} tilesPerRow={6}/> */}
 
                     </div>

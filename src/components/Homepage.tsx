@@ -139,7 +139,7 @@ export default function Homepage(props:IHomepageProps) {
     const providerState = useContext(Context)
 
     const windowSize = useWindowSize()
-    const movieTilesPerRow = calculateMovieTilesPerRow(windowSize)
+    // const movieTilesPerRow = calculateMovieTilesPerRow(windowSize)
     const moviesToShow = calculateMoviesToShow(windowSize)
     const watchlistTilesPerRow = calculateWatchlistTilesPerRow(windowSize)
     const {data, isLoading}  = useQuery({ queryKey: ["trendingMovies"], queryFn:fetchTrendingMovies, refetchOnWindowFocus: false, staleTime:60000})
@@ -196,19 +196,19 @@ export default function Homepage(props:IHomepageProps) {
                 <div style={{display:'flex', flexDirection:'column', rowGap:20}}>
                     <b style={{fontSize:20, color:providerState.hue.defaults.textLarge}}>trending movies</b>
                     {
-                        windowSize.width > 500 &&
-                        <MovieTileContainer movies={trendingMovies} numberOfRows={2} tilesPerRow={movieTilesPerRow}/>
+                        // windowSize.width > 500 &&
+                        <MovieTileContainer movies={trendingMovies} numberOfRows={2}/>
                     }
                     
                 </div>
 
             </div>
 
-            {windowSize.width <= 500 &&
+            {/* {windowSize.width <= 500 &&
                 <div style={{marginTop:20}}>
                     <MovieTileScrollingContainer movies={trendingMovies} />
                 </div>
-            }
+            } */}
             <div style={{height:20}}/>
         </div>
     )
