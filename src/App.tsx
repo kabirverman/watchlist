@@ -59,14 +59,14 @@ function App() {
           </Routes>
 
 
-          <div style={{position:'absolute', pointerEvents:'none', opacity:0}}>
+          <div style={{position:'absolute', pointerEvents:'none', opacity:0, height:0, overflow:'hidden'}}>
             {preloadEmojis()}
           </div>
 
 
         </div>
       </MainProvider>
-      <ReactQueryDevtools />
+      {/* <ReactQueryDevtools /> */}
     </QueryClientProvider>
   );
 }

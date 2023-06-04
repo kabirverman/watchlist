@@ -47,7 +47,8 @@ export default function HomepageHero(props:IHeroProps) {
             <div className="pageContent homepageHero-containerContent">
                 <div className="homepageHero-text" style={{display:'flex', flexDirection:'column'}}>
                     <h1 className="homepageHero-title" style={{color:props.hue.defaults.textLarge}}>movie<br/>watchlist</h1>
-                    <p className="homepageHero-slogan" style={{color:props.hue.defaults.textSmall}}>lorem ipsum swagathy dorum flarp.</p>
+                    {/* <p className="homepageHero-slogan" style={{color:props.hue.defaults.textSmall}}>lorem ipsum swagathy dorum flarp.</p> */}
+                    <p className="homepageHero-slogan" style={{color:props.hue.defaults.textSmall}}>make a list, watch the list, repeat.</p>
                 </div>
                 
                 <div className="homepageHero-imageContainer">

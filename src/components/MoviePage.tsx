@@ -253,9 +253,15 @@ export default function MoviePage() {
                                         className="watchlistTile-emoji"
                                         src={require(`../${getEmoji("🎬").path}`)}
                                         alt={getEmoji("🎬").name}
-                                        style={{width:25,height:25}}
+                                        style={{width:25,height:25, alignSelf:'flex-start'}}
                                     />
-                                    {data === undefined || isLoading || !showData ? <p className="placeholderGradientAnimation" style={{backgroundColor:providerState.hue.defaults.textSmall, opacity:0.2, color:'transparent', borderRadius:8, width:'fit-content'}}>director name goes here</p> : <p>{data.creators.directors.join(", ")}</p>}
+                                    {/* {data === undefined || isLoading || !showData ? <p className="placeholderGradientAnimation" style={{backgroundColor:providerState.hue.defaults.textSmall, opacity:0.2, color:'transparent', borderRadius:8, width:'fit-content'}}>director name goes here</p> : <p>{data.creators.directors.join(", ")}</p>} */}
+                                    { data === undefined || isLoading || !showData
+                                        ? <p className="placeholderGradientAnimation" style={{backgroundColor:providerState.hue.defaults.textSmall, opacity:0.2, color:'transparent', borderRadius:8, width:'fit-content'}}>director names go here. swag money</p>
+                                        : <div style={{alignSelf:'flex-start'}}>
+                                            {data?.creators.directors.map(director => <p key={director}>{director}</p>)}
+                                        </div>
+                                    }
                                     {/* <p>{data.creators.directors.join(", ")}</p> */}
                                 </div>
                                 <div className="moviePage-creatorTile" style={{backgroundColor:providerState.hue.defaults.panel, boxShadow:`inset 0px 0px 0px 1px ${providerState.hue.defaults.border}`}}>
@@ -263,9 +269,15 @@ export default function MoviePage() {
                                         className="watchlistTile-emoji"
                                         src={require(`../${getEmoji("✏️").path}`)}
                                         alt={getEmoji("✏️").name}
-                                        style={{width:25,height:25}}
+                                        style={{width:25,height:25, alignSelf:'flex-start'}}
                                     />
-                                    {data === undefined || isLoading || !showData ? <p className="placeholderGradientAnimation" style={{backgroundColor:providerState.hue.defaults.textSmall, opacity:0.2, color:'transparent', borderRadius:8, width:'fit-content'}}>writer names go here. swag money</p> : <p>{data.creators.writers.join(", ")}</p>}
+                                    {/* {data === undefined || isLoading || !showData ? <p className="placeholderGradientAnimation" style={{backgroundColor:providerState.hue.defaults.textSmall, opacity:0.2, color:'transparent', borderRadius:8, width:'fit-content'}}>writer names go here. swag money</p> : <p>{data.creators.writers.join(", ")}</p>} */}
+                                    { data === undefined || isLoading || !showData
+                                        ? <p className="placeholderGradientAnimation" style={{backgroundColor:providerState.hue.defaults.textSmall, opacity:0.2, color:'transparent', borderRadius:8, width:'fit-content'}}>writer names go here. swag money</p>
+                                        : <div style={{alignSelf:'flex-start'}}>
+                                            {data?.creators.writers.map(writer => <p key={writer}>{writer}</p>)}
+                                        </div>
+                                    }
                                     {/* <p>{data.creators.writers.join(", ")}</p> */}
                                 </div>
                             </div>

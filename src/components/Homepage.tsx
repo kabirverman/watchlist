@@ -209,7 +209,7 @@ export default function Homepage(props:IHomepageProps) {
                     <MovieTileScrollingContainer movies={trendingMovies} />
                 </div>
             } */}
-            <div style={{height:20}}/>
+            {/* <div style={{height:20}}/> */}
         </div>
     )
 }
