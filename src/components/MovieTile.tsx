@@ -83,21 +83,21 @@ export default function MovieTile(props:IMovieTileProps) {
                     </svg>
                 </div>
 
-                <div style={{position:'absolute', backgroundColor:hue.defaults.panel, width:'100%', borderRadius:10, color:hue.defaults.textSmall, transform:`translate(0px, ${dropdownTranslate}%)`, transition:'transform 150ms ease-out'}}>
+                <div style={{position:'absolute', backgroundColor:hue.defaults.panel, width:'100%', borderRadius:10, color:hue.defaults.textSmall, transform:`translate(0px, ${dropdownTranslate}%)`, transition:'transform 150ms ease-out', fontSize:14, fontWeight:500}}>
                     <div style={{padding:'45px 0px 0px 0px', display:'flex', flexDirection:'column'}}>
                         <div
-                            style={{padding:'10px 10px 10px 10px', display:'flex', alignItems:'center', gap:5, backgroundColor:'rgba(0,0,0,0.05)'}}
+                            style={{padding:'10px 10px 10px 10px', display:'flex', alignItems:'center', gap:5, backgroundColor:'rgba(0,0,0,0.05)', justifyContent:'space-evenly'}}
                             onClick={() => {
                                 props.manipulateMovieInWatchlist?.toggleMovieWatchState(props.movie!)
                                 setShowDropdown(false)
                             }}
                         >
                             <img src={require(`../${eyeEmoji.path}`)} alt={eyeEmoji.name} style={{width:20, height:20}} />
-                            <p>watched</p>
+                            <p>{props.movie?.isWatched ? 'un-watch' : 'watched'}</p>
                         </div>
 
                         <div
-                            style={{padding:'10px 10px 10px 10px', display:'flex', alignItems:'center', gap:5}}
+                            style={{padding:'10px 10px 10px 10px', display:'flex', alignItems:'center', gap:5, justifyContent:'space-evenly'}}
                             onClick={() => {
                                 props.manipulateMovieInWatchlist?.removeMovieFromWatchlist(props.movie!)
                                 setShowDropdown(false)

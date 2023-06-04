@@ -127,6 +127,7 @@ export default function WatchlistEditModal(props:IWatchlistEditModalProps) {
                         type="text"
                         style={{all:'unset', backgroundColor:'#F3F3F3',width:'100%', borderRadius:10, padding:10, boxSizing:'border-box'}}
                         value={watchlistName}
+                        maxLength={40}
                         placeholder={props.watchlist ? props.watchlist.name : 'enter a watchlist name'}
                         onChange={(e)=>setWatchlistName(e.target.value)}
                     />
@@ -186,7 +187,7 @@ export default function WatchlistEditModal(props:IWatchlistEditModalProps) {
                                                 transform:'scale(1.1)',
                                                 cursor:'pointer',
                                                 opacity:watchlistEmoji.name === emoji.name ? 1 : 0.5,
-                                                boxShadow:watchlistEmoji.name === emoji.name ? `0px 0px 0px 1px ${watchlistHue.defaults.textLarge}` : '',
+                                                boxShadow:watchlistEmoji.name === emoji.name ? `inset 0px 0px 0px 1px ${watchlistHue.defaults.textLarge}` : '',
                                                 borderRadius:100
                                             }}
                                             onClick={()=>setWatchlistEmoji(emoji)}
