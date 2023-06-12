@@ -15,33 +15,28 @@ export default function CastTile(props:ICastTileProps) {
     function showImage() {
         if (props.castMember === undefined || !props.showData) {
             return (
-                <div className="placeholderGradientAnimation" style={{position:'absolute', backgroundColor:props.hue.defaults.textSmall, opacity:0.2, borderRadius:'10px 0px 0px 10px', top:0, bottom:0, display:'flex', width:66,alignItems:'center', justifyContent:'center'}}/>
+                <div className="placeholderGradientAnimation castTile-image-placeholder" style={{backgroundColor:props.hue.defaults.textSmall}}/>
             )
         }
 
         if (isImageFound) {
             return (
                 <div style={{position:'relative', width:'100%', height:'100%'}}>
-                    <div style={{position:'absolute', borderRadius:'10px 0px 0px 10px', width:'100%', height:'100%', backgroundColor:props.hue.defaults.textSmall, opacity:isImageLoaded? 0 : 0.2, transition:`opacity ${500 + Math.random()*1000}ms`}} />
-                    {/* { !isImageLoaded && <div style={{position:'absolute', borderRadius:'10px 0px 0px 10px', width:'100%', height:'100%', backgroundColor:props.hue.defaults.textSmall, opacity: 0.2}} /> } */}
+                    <div className="castTile-fadeDiv" style={{backgroundColor:props.hue.defaults.textSmall, opacity:isImageLoaded? 0 : 0.2, transition:`opacity ${500 + Math.random()*1000}ms`}} />
                     <img
-                        className="starTile-image"
+                        className="castTile-image"
                         src={`https://image.tmdb.org/t/p/w200${props.castMember.posterPath}?dummy=parameter`}
                         alt={`${props.castMember.name}`}
-                        style={{borderRadius:'10px 0px 0px 10px', width:'100%', height:'100%', objectFit:'cover',boxShadow:`inset 0px 0px 0px 1px ${props.hue.defaults.border}`, padding:1, boxSizing:'border-box',opacity:isImageLoaded? 1 : 0, transition:`opacity ${500 + Math.random()*1000}ms`}}
-                        onError={()=> {
-                            console.log('oops')
-                            setIsImageFound(false)
-                            // setShouldShowPlaceholder(true)
-                        }}
-                        onLoad={()=> setIsImageLoaded(true)}
+                        style={{boxShadow:`inset 0px 0px 0px 1px ${props.hue.defaults.border}`, opacity:isImageLoaded? 1 : 0, transition:`opacity ${500 + Math.random()*1000}ms`}}
+                        onError={() => setIsImageFound(false)}
+                        onLoad={() => setIsImageLoaded(true)}
                     />
                 </div>
             )
         }
 
         return (
-            <div style={{position:'absolute', backgroundColor:props.hue.defaults.border, borderRadius:'10px 0px 0px 10px', top:0, bottom:0, display:'flex', width:66,alignItems:'center', justifyContent:'center'}}>
+            <div className="castTile-noImage" style={{backgroundColor:props.hue.defaults.border}}>
                 <p style={{textAlign:'center', color:'white', lineHeight:'16px'}}>no image</p>
             </div>
         )
@@ -55,16 +50,23 @@ export default function CastTile(props:ICastTileProps) {
 
 
     return (
-        <div style={{display:'flex', backgroundColor:props.hue.defaults.panel, boxShadow:`inset 0px 0px 0px 1px ${props.hue.defaults.border}`, borderRadius:10}}>
+        <div className="castTile-container" style={{backgroundColor:props.hue.defaults.panel, boxShadow:`inset 0px 0px 0px 1px ${props.hue.defaults.border}`}}>
             <div style={{width:66, minHeight:100, flex: '0 0 auto', position:'relative'}}>
                 {showImage()}
                 
             </div>
             <div style={{padding:10, color:props.hue.defaults.textSmall}}>
-                {props.castMember === undefined || !props.showData ? <p className="placeholderGradientAnimation" style={{backgroundColor:props.hue.defaults.textSmall, opacity:0.2, color:'transparent', borderRadius:8, width:'fit-content'}}>writer names</p> : <p style={{fontWeight:600}}>{props.castMember.name}</p>}
-                {/* <p style={{fontWeight:600}}>{props.castMember.name}</p> */}
-                {props.castMember === undefined || !props.showData ? <p className="placeholderGradientAnimation" style={{backgroundColor:props.hue.defaults.textSmall, opacity:0.2, color:'transparent', borderRadius:8, width:'fit-content', marginTop:5}}>writer names go here</p> : <p>as {props.castMember.character}</p>}
-                {/* <p>as {props.castMember.character}</p> */}
+                {props.castMember === undefined || !props.showData
+                    ? <>
+                        <p className="placeholderGradientAnimation palceholderText" style={{backgroundColor:props.hue.defaults.textSmall}}>castmember name</p>
+                        <p className="placeholderGradientAnimation palceholderText" style={{backgroundColor:props.hue.defaults.textSmall, marginTop: 5}}>character name goes here</p>
+                    </>
+
+                    : <>
+                        <p style={{fontWeight:600}}>{props.castMember.name}</p>
+                        <p>as {props.castMember.character}</p>
+                    </>
+                }
             </div>
         </div>
     )

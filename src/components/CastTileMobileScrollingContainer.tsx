@@ -15,15 +15,7 @@ export default function CastTileMobileScrollingContainer(props:ICastTileMobileSc
         <div>
             <div style={{display:'flex', columnGap:10, overflowX:'scroll', scrollPadding:'0px 15px'}}>
                 <div style={{width:5, flex:'0 0 auto'}}/>
-                {castArray.map((castMember, index) => {
-                    return (
-                        // <div key={index} style={{flex:'0 0 auto', width:'40%'}}>
-                            <CastTileMobile key={index} castMember={castMember} hue={props.hue} showData={props.showData}/>
-                            // {/* <p style={{fontWeight:600}}>{castMember.name}</p>
-                            // <p>as {castMember.character}</p> */}
-                        // </div>
-                    )
-                })}
+                {castArray.map((castMember, index) => <CastTileMobile key={index} castMember={castMember} hue={props.hue} showData={props.showData}/> )}
                 <div style={{width:5, flex:'0 0 auto'}}/>
             </div>
         </div>

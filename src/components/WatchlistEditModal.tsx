@@ -10,6 +10,7 @@ interface IWatchlistEditModalProps {
     watchlist?:IWatchlist,
     closeModal:()=>void,
     customWidth?:string,
+    afterCreate?:()=>void
     // setModalSize: React.Dispatch<React.SetStateAction<{width: number,height: number}>>
 }
 
@@ -60,6 +61,7 @@ export default function WatchlistEditModal(props:IWatchlistEditModalProps) {
             })
 
             providerState.updateWatchlists(updatedWatchlists)
+            
             props.closeModal()
 
             return
@@ -91,7 +93,9 @@ export default function WatchlistEditModal(props:IWatchlistEditModalProps) {
         let updatedWatchlists = [...providerState.watchlists, newWatchlist]
 
         providerState.updateWatchlists(updatedWatchlists)
-        props.closeModal()
+        if (props.afterCreate) props.afterCreate()
+            else props.closeModal()
+        
         // setIsCreatingNewWatchlist(false)
 
     }

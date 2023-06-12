@@ -47,57 +47,29 @@ export default function HomepageHero(props:IHeroProps) {
             <div className="pageContent homepageHero-containerContent">
                 <div className="homepageHero-text" style={{display:'flex', flexDirection:'column'}}>
                     <h1 className="homepageHero-title" style={{color:props.hue.defaults.textLarge}}>movie<br/>watchlist</h1>
-                    {/* <p className="homepageHero-slogan" style={{color:props.hue.defaults.textSmall}}>lorem ipsum swagathy dorum flarp.</p> */}
                     <p className="homepageHero-slogan" style={{color:props.hue.defaults.textSmall}}>make a list, watch the list, repeat.</p>
                 </div>
+                
                 
                 <div className="homepageHero-imageContainer">
                     <div className="homepageHero-imageContent">
 
                         <div className="homepageHero-movieColumn" style={{height:'fit-content', transform:'translate(0px, 25%)'}}>
-                            {moviesToDisplay.slice(0,2).map((movie, index) => {
-                                // return <div key={index} style={{backgroundColor:props.hue.defaults.textLarge, width:'100%', aspectRatio:'2/3', borderRadius:10}} />
+                            {moviesToDisplay.slice(0,2).map((movie) => {
                                 return <HomepageHeroPoster movie={movie}/>
-                                if (movie.posterPath === 'loading') return <div key={index} style={{backgroundColor:props.hue.defaults.textLarge, width:'100%', aspectRatio:'2/3', borderRadius:10}} />
-                                return (
-                                    <img
-                                        key={movie.title}
-                                        src={`https://image.tmdb.org/t/p/w${200}${movie.posterPath}?dummy=parameter`}
-                                        alt={movie.title}
-                                        style={{maxWidth:'100%', maxHeight:'100%', objectFit:'cover', borderRadius:10, boxShadow:'0px 0px 10px 0px rgba(0,0,0,0.5)'}}
-                                    />
-                                )
+                                
                             })}
                         </div>
 
                         <div className="homepageHero-movieColumn">
-                            {moviesToDisplay.slice(2,5).map((movie, index) => {
-                                // return <div key={index} style={{backgroundColor:props.hue.defaults.textLarge, width:'100%', aspectRatio:'2/3', borderRadius:10}} />
+                            {moviesToDisplay.slice(2,5).map((movie) => {
                                 return <HomepageHeroPoster movie={movie}/>
-                                if (movie.posterPath === 'loading') return <div key={index} style={{backgroundColor:props.hue.defaults.textLarge, width:'100%', aspectRatio:'2/3', borderRadius:10}} />
-                                return (
-                                    <img
-                                        key={movie.title}
-                                        src={`https://image.tmdb.org/t/p/w${200}${movie.posterPath}?dummy=parameter`}
-                                        alt={movie.title}
-                                        style={{maxWidth:'100%', maxHeight:'100%', objectFit:'cover', borderRadius:10, boxShadow:'0px 0px 10px 0px rgba(0,0,0,0.5)'}}
-                                    />
-                                )
                             })}
                         </div>
 
                         <div className="homepageHero-movieColumn" style={{height:'fit-content', transform:'translate(0px, 25%)'}}>
-                            {moviesToDisplay.slice(5,7).map((movie, index) => {
+                            {moviesToDisplay.slice(5,7).map((movie) => {
                                 return <HomepageHeroPoster movie={movie}/>
-                                // if (movie.posterPath === 'loading') return <div key={index} style={{backgroundColor:props.hue.defaults.textLarge, width:'100%', aspectRatio:'2/3', borderRadius:10}} />
-                                // return (
-                                //     <img
-                                //         key={movie.title}
-                                //         src={`https://image.tmdb.org/t/p/w${200}${movie.posterPath}?dummy=parameter`}
-                                //         alt={movie.title}
-                                //         style={{maxWidth:'100%', maxHeight:'100%', objectFit:'cover', borderRadius:10, boxShadow:'0px 0px 10px 0px rgba(0,0,0,0.5)'}}
-                                //     />
-                                // )
                             })}
                         </div>
                         
