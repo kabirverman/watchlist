@@ -102,22 +102,26 @@ export default function MoviePage() {
 
     
     function showMoviePoster() {
+        // return <div className="moviePage-poster-image placeholderGradientAnimation" style={{aspectRatio:'2/3', height:'100%', backgroundColor:providerState.hue.defaults.textSmall, opacity:0.2}}/>
         if (data === undefined || isLoading || !showData) {
             return <div className="moviePage-poster-image placeholderGradientAnimation" style={{aspectRatio:'2/3', height:'100%', backgroundColor:providerState.hue.defaults.textSmall, opacity:0.2}}/>
         }
 
         return (
-            <div style={{position:'relative', lineHeight:0,width:'100%', height:'100%', aspectRatio:isMoviePosterLoaded? '0':'2/3'}}>
+            <div style={{position:'relative', lineHeight:0,width:'100%', height:'100%'}}>
+                <div style={{width:'100%', height:'100%', aspectRatio:'2/3', borderRadius:'10px 10px 0px 0px',backgroundColor:providerState.hue.defaults.textSmall, opacity:isMoviePosterLoaded? 0 : 0.2,transition:`opacity ${500 + Math.random()*1000}ms`}} />
                 {!showData && <div style={{position:'absolute', width:'100%', height:'100%', borderRadius:'10px 10px 0px 0px',backgroundColor:providerState.hue.defaults.textSmall, opacity:isMoviePosterLoaded? 0 : 0.2,transition:`opacity ${500 + Math.random()*1000}ms`}} />}
                 <img
                     ref={imageRef}
                     crossOrigin="anonymous"
-                    src={`https://image.tmdb.org/t/p/w${342}${data.posterPath}?parameter=ok`}
-                    alt={data.title}
+                    src={`https://image.tmdb.org/t/p/w${342}${data!.posterPath}?parameter=ok`}
+                    alt={data!.title}
                     className="moviePage-poster-image"
-                    style={{width:'calc(100% - 2px)', marginLeft:1, opacity:isMoviePosterLoaded ? 1 : 0, transition:`opacity ${500 + Math.random()*1000}ms`}}
+                    style={{position:'absolute', top:0}}
+                    // style={{width:'calc(100% - 2px)', marginLeft:1}}//, opacity:isMoviePosterLoaded ? 1 : 0, transition:`opacity ${500 + Math.random()*1000}ms`}}
                     onLoad={()=> {
                         setIsMoviePosterLoaded(true)
+                        console.log('loaded')
                         // let rgb = colorThief.getColor(imageRef.current, 10)
                         // let grabbedHue = getHueFromRGB(rgb[0], rgb[1], rgb[2])
                         // providerState.updateHue(grabbedHue)

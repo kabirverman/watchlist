@@ -19,6 +19,7 @@ export default function CastTileContainer(props: ICastTileContainerProps) {
     
     let visibleTiles = props.cast?.slice(numberToShow*castPage - numberToShow, Math.min(numberToShow*castPage,props.cast?.length??0)).length??0
     let blankTileCount = numberToShow - visibleTiles
+
     let canGoNext = castPage < Math.ceil((props.cast?.length??0)/numberToShow)
     let canGoPrev = castPage > 1
 
@@ -44,14 +45,21 @@ export default function CastTileContainer(props: ICastTileContainerProps) {
 
 
     function showCastTiles() {
-        if (props.cast === undefined) return
+        if (props.cast === undefined) {
+            return Array(numberToShow).fill(undefined).map((item,index) => {
+                
+                return <CastTile key={index} castMember={undefined} hue={props.hue} showData={props.showData}/>  
+            })
+        }
 
-        return props.cast.slice(numberToShow*castPage - numberToShow ,numberToShow*castPage).map((castMember, index) => {
+        return props.cast?.slice(numberToShow*castPage - numberToShow ,numberToShow*castPage).map((castMember, index) => {
+            // if (index < 3) return <CastTile key={index} castMember={undefined} hue={props.hue} showData={props.showData}/>  
             return <CastTile key={castMember?.name??index} castMember={castMember} hue={props.hue} showData={props.showData}/>  
         })
     }
 
     function showBlankTiles() {
+
         return blankTileCount > 0 && Array(blankTileCount).fill(undefined).map((item) => {
             return <div style={{backgroundColor:'#f7f7f7', minHeight:103, borderRadius:10}}/>
         })

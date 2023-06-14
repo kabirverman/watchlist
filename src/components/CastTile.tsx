@@ -22,12 +22,12 @@ export default function CastTile(props:ICastTileProps) {
         if (isImageFound) {
             return (
                 <div style={{position:'relative', width:'100%', height:'100%'}}>
-                    <div className="castTile-fadeDiv" style={{backgroundColor:props.hue.defaults.textSmall, opacity:isImageLoaded? 0 : 0.2, transition:`opacity ${500 + Math.random()*1000}ms`}} />
+                    {/* <div className="castTile-fadeDiv" style={{backgroundColor:props.hue.defaults.textSmall, opacity:isImageLoaded? 0 : 0.2, transition:`opacity ${500 + Math.random()*1000}ms`}} /> */}
                     <img
                         className="castTile-image"
                         src={`https://image.tmdb.org/t/p/w200${props.castMember.posterPath}?dummy=parameter`}
                         alt={`${props.castMember.name}`}
-                        style={{boxShadow:`inset 0px 0px 0px 1px ${props.hue.defaults.border}`, opacity:isImageLoaded? 1 : 0, transition:`opacity ${500 + Math.random()*1000}ms`}}
+                        style={{boxShadow:`inset 0px 0px 0px 1px ${props.hue.defaults.border}`}}//, opacity:isImageLoaded? 1 : 0, transition:`opacity ${500 + Math.random()*1000}ms`}}
                         onError={() => setIsImageFound(false)}
                         onLoad={() => setIsImageLoaded(true)}
                     />
@@ -51,7 +51,7 @@ export default function CastTile(props:ICastTileProps) {
 
     return (
         <div className="castTile-container" style={{backgroundColor:props.hue.defaults.panel, boxShadow:`inset 0px 0px 0px 1px ${props.hue.defaults.border}`}}>
-            <div style={{width:66, minHeight:100, flex: '0 0 auto', position:'relative'}}>
+            <div style={{width:66, minHeight:103, flex: '0 0 auto', position:'relative'}}>
                 {showImage()}
                 
             </div>
