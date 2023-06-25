@@ -93,8 +93,9 @@ export default function WatchlistEditModal(props:IWatchlistEditModalProps) {
         let updatedWatchlists = [...providerState.watchlists, newWatchlist]
 
         providerState.updateWatchlists(updatedWatchlists)
+        setWatchlistName("")
         if (props.afterCreate) props.afterCreate()
-            else props.closeModal()
+        else props.closeModal()
         
         // setIsCreatingNewWatchlist(false)
 

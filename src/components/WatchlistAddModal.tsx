@@ -44,8 +44,9 @@ export default function WatchlistAddModal(props:IWatchlistAddModalProps) {
                     }}
                     afterCreate={()=> {
                         console.log(hasWatchlists)
-                        if (hasWatchlists) props.closeModal()
-                        else setShowCreateWatchlistModal(false)
+                        // if (hasWatchlists) props.closeModal()
+                        // else setShowCreateWatchlistModal(false)
+                        setShowCreateWatchlistModal(false)
                     }}
                 />
             </div>
