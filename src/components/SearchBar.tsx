@@ -5,6 +5,7 @@ import { useDebounce } from "../hooks/useDebounce"
 import { IHue, IMovie } from "../Interfaces"
 import SearchBarItem from "./SearchBarItem"
 import SearchBarItemPlaceholder from "./SearchBarItemPlaceholder"
+import { useLocation } from "react-router-dom"
 
 interface ISearchBarProps {
     hue:IHue,
@@ -26,6 +27,7 @@ export default function SearchBar(props:ISearchBarProps) {
     const [imageLoadStatusArray, setImageLoadStatusArray] = useState<boolean[]>([])
     const [areAllImagesLoaded, setAreAllImagesLoaded] = useState<boolean>(false)
 
+    let location = useLocation()
 
     useLayoutEffect(()=> {
         if (props.isMobile) {
@@ -45,6 +47,10 @@ export default function SearchBar(props:ISearchBarProps) {
             searchInputRef.current?.blur()
         }
     },[isFocusingSearch])
+
+    useEffect(()=> {
+        setSearch("")
+    },[location])
 
 
 
@@ -100,8 +106,7 @@ export default function SearchBar(props:ISearchBarProps) {
             tabIndex={1}
             onBlur={(e)=>{
                 if (!e.currentTarget.contains(e.relatedTarget)) {
-                    // TODO: re enable
-                    // setIsFocusingSearch(false)
+                    setIsFocusingSearch(false)
                 }
             }}
             onFocus={()=> {

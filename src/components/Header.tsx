@@ -16,7 +16,7 @@ export default function Header(props:IHeaderProps) {
 
 	const [isSearchBarHeader, setIsSearchBarHeader] = useState(false)
 	
-
+	
 
 	if (isSearchBarHeader) {
 		return (

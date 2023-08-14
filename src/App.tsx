@@ -22,6 +22,7 @@ function App() {
   const [allEmojis, setAllEmojis] = useState<IEmoji[]>(getAllEmojis())
 
 
+
   useEffect(()=> {
     getWatchlistsFromLocal().forEach((watchlist:IWatchlist) => {
       console.log(watchlist)
