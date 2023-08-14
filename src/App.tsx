@@ -9,6 +9,7 @@ import MoviePage from './components/MoviePage';
 import MainProvider from './components/MainProvider';
 import { getWatchlistsFromLocal } from './fetch';
 import WatchlistPage from './components/WatchlistPage';
+import { Analytics } from '@vercel/analytics/react';
 
 
 
@@ -58,7 +59,9 @@ function App() {
 
         </div>
       </MainProvider>
+      <Analytics />
     </QueryClientProvider>
+    
   );
 }
 

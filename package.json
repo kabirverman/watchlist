@@ -1,5 +1,5 @@
 {
-  "homepage" :"https://kabirverman.github.io/#/watchlist/",
+  "homepage": "https://kabirverman.github.io/#/watchlist/",
   "name": "watchlist-project",
   "version": "0.1.0",
   "private": true,
@@ -13,6 +13,7 @@
     "@types/node": "^16.18.21",
     "@types/react": "^18.0.29",
     "@types/react-dom": "^18.0.11",
+    "@vercel/analytics": "^1.0.2",
     "colorthief": "^2.4.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
