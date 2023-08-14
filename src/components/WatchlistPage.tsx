@@ -184,13 +184,14 @@ export default function WatchlistPage() {
                                 return (
                                     <div
                                         key={option}
+                                        className="watchlistPage-sortButtonOption"
                                         style={{
                                             display:'flex',
                                             gap:5,
                                             padding:'5px 10px',
                                             justifyContent:'space-between',
                                             cursor:sortOrder === option ? 'default' : 'pointer',
-                                            backgroundColor:sortOrder === option ? 'rgba(0,0,0,0.05)' : 'white',
+                                            backgroundColor:sortOrder === option ? 'rgba(0,0,0,0.02)' : '',
                                             borderRadius: borderRadius,
                                             fontWeight:sortOrder === option ? 500 : 400,
                                         }}

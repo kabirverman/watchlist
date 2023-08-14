@@ -172,7 +172,7 @@ export default function MovieTile(props:IMovieTileProps) {
 
     
     return (
-        <div style={{boxSizing:'border-box', lineHeight:0}}>
+        <div style={{boxSizing:'border-box', lineHeight:0}} className="movieTile">
             {showImage()}
 
             

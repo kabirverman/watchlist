@@ -10,7 +10,9 @@ interface IWatchlistEditModalProps {
     watchlist?:IWatchlist,
     closeModal:()=>void,
     customWidth?:string,
-    afterCreate?:()=>void
+    afterCreate?:()=>void,
+    inputFocus?:()=>void,
+    inputBlur?:()=>void,
     // setModalSize: React.Dispatch<React.SetStateAction<{width: number,height: number}>>
 }
 
@@ -135,6 +137,8 @@ export default function WatchlistEditModal(props:IWatchlistEditModalProps) {
                         maxLength={40}
                         placeholder={props.watchlist ? props.watchlist.name : 'enter a watchlist name'}
                         onChange={(e)=>setWatchlistName(e.target.value)}
+                        onFocus={props.inputFocus}
+                        onBlur={props.inputBlur}
                     />
                 </div>
                 <div className="watchlistEditModal-section">

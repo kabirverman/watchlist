@@ -18,6 +18,7 @@ export default function WatchlistAddModal(props:IWatchlistAddModalProps) {
     let reversedWatchlists = [...providerState.watchlists].reverse()
     const [showCreateWatchlistModal, setShowCreateWatchlistModal] = useState(hasWatchlists ? false : true)
     const windowSize = useWindowSize()
+    const [top, setTop] = useState(0)
 
 
 
@@ -29,8 +30,8 @@ export default function WatchlistAddModal(props:IWatchlistAddModalProps) {
     return (
         <>
             <div style={{
-                position:'absolute',
-                top:0,
+                position:'fixed',
+                top:top,
                 transform:showCreateWatchlistModal ? '' : 'translate(0px, -20px) scale(0.95)',
                 zIndex:showCreateWatchlistModal ? 1 : -1,
                 transition:'transform 500ms cubic-bezier(0.09, 0.26, 0.11, 0.99)',
@@ -48,6 +49,8 @@ export default function WatchlistAddModal(props:IWatchlistAddModalProps) {
                         // else setShowCreateWatchlistModal(false)
                         setShowCreateWatchlistModal(false)
                     }}
+                    inputFocus={()=>{windowSize.width < 500 && setTop(125)}}
+                    inputBlur={()=>{windowSize.width < 500 && setTop(0)}}
                 />
             </div>
             <div ref={modalRef} className="watchlistAddModal-master" style={{ transform:showCreateWatchlistModal ? 'translate(0px, -20px) scale(0.95)' : '', transition:'transform 500ms cubic-bezier(0.09, 0.26, 0.11, 0.99)', opacity:hasWatchlists ? 1 : 0}}>
